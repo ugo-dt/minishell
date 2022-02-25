@@ -1,13 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   execute_cmd.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 15:51:31 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 15:51:35 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/02/25 18:53:01 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/02/25 18:53:44 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#ifndef EXECUTE_CMD_H
+# define EXECUTE_CMD_H
+
+void	run_command(void);
+
+/* EXECUTE_CMD_H */
+#endif

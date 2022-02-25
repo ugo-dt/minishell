@@ -3,20 +3,21 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+         #
+#    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/25 13:39:06 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/25 17:32:59 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/02/25 22:03:57 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			:=	minishell
 
 SRCS			:=	srcs/init.c srcs/main.c srcs/prompt.c srcs/signal.c \
-					srcs/err.c \
+					srcs/err.c srcs/execute_cmd.c srcs/history.c \
+					srcs/history_struct.c\
 					srcs/builtins/export.c \
 					srcs/builtins/env.c \
-					srcs/parsing/parsing.c \
+					srcs/parsing/parser.c \
 					srcs/variables/env.c \
 					srcs/variables/ft_getenv.c \
 					srcs/variables/ft_setenv.c
@@ -50,15 +51,14 @@ RED				:=	\033[91m
 all: $(NAME)
 
 $(NAME): $(LIBFT) text1 $(OBJS)
-	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(LIBS) $(OBJS) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)$(NAME) ready!$(DEFAULT)"
 
 .c.o:
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
+	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
 $(LIBFT):
-	@make -s -C $(PATH_LIBFT)
+	@make -C $(PATH_LIBFT)
 
 clean_libft:
 	@make -s -C $(PATH_LIBFT) clean

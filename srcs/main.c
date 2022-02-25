@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 17:10:19 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/25 19:24:41 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "execute_cmd.h"
 #include "sig.h"
+#include "minishell.h"
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 # include <string.h>
 # include "prompt.h"
 # include "builtin.h"
@@ -57,11 +61,14 @@ int	main(int ac, const char **av, const char **envp)
 		g_sh.prompt = get_prompt();
 		g_sh.line = readline(g_sh.prompt);
 		if (!g_sh.line || !strcmp(g_sh.line, "exit"))
-			break ;
-		if (!strcmp(g_sh.line, "env"))
-			env();
-		ft_printf("line: %s\n", g_sh.line);
-		free(g_sh.line);
+			g_sh.status = g_sh.status & ~FLAG_LOOP;
+		else
+		{
+			add_command_to_history();
+			run_command();
+		}
+		if (g_sh.line)
+			free(g_sh.line);
 		g_sh.line = NULL;
 	}
 	ft_printf("exit\n");

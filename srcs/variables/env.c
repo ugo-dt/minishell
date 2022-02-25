@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:16 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 17:30:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/25 19:25:23 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-t_envl	*new_envl(const char *name, const char *value, int export, t_envl *next)
+t_envl	*new_envl(const char *name, const char *val, int export, t_envl *next)
 {
 	t_envl	*envl;
 
@@ -23,9 +23,9 @@ t_envl	*new_envl(const char *name, const char *value, int export, t_envl *next)
 		if (!envl->name)
 			return (NULL);
 	}
-	if (value)
+	if (val)
 	{
-		envl->value = ft_strdup(value);
+		envl->value = ft_strdup(val);
 		if (!envl->value)
 			return (NULL);
 	}

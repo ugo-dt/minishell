@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 17:30:21 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/25 19:22:25 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }t_envl;
 
-t_envl	*new_envl(const char *name, const char *value, int export, t_envl *next);
+t_envl	*new_envl(const char *name, const char *val, int export, t_envl *next);
 void	envl_delone(t_envl *envl);
 void	clear_env_list(t_envl **start);
 void	envl_pushback(t_envl **lst, t_envl *new);

@@ -3,16 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+         #
+#    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/16 12:23:21 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/25 17:32:02 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/02/25 22:03:39 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libft.a
 
-#@echo "$(foreach src,$(SRCS),$(src)\n)"
 SRCS		=	srcs/array/2d_array.c \
 				srcs/array/ft_split.c \
 				srcs/array/str_array.c \
@@ -91,12 +90,11 @@ SRCS		=	srcs/array/2d_array.c \
 				srcs/write/ft_putnbr_fd.c \
 				srcs/write/ft_putstr.c \
 				srcs/write/ft_putstr_fd.c
-
+OBJS		=	$(SRCS:.c=.o)
 HEADERS		=	-I include
 
 CC			=	clang
 FLAGS		=	-Wall -Wextra -Werror
-OBJS		=	$(SRCS:.c=.o)
 
 # Colors
 _default	=	\033[39m
@@ -113,7 +111,6 @@ $(NAME): text1 $(OBJS)
 	@ar rcs $(NAME) $(OBJS) && printf "\033[2K\r$(_green)$(NAME) ready!$(_default)\n"
 
 .c.o:
-	@echo "$(_default)Compiling $<..."
 	$(CC) $(FLAGS) $(HEADERS) -o $@ -c $<
 
 clean:

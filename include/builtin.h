@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:11:15 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 17:10:59 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/25 22:02:30 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 # define BUILTIN_H
 
 # include "libft.h"
+# include "shell.h"
 # include <stdlib.h>
-
-typedef struct s_command
-{
-	void	*data;
-}t_cmd;
 
 /* cd builtin
  *

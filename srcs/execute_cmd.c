@@ -1,37 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 22:15:30 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/02/25 22:15:06 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sig.h"
+#include "execute_cmd.h"
+#include "shell.h"
+#include "builtin.h"
+#include "parser.h"
 
-void	sig_handler(int signum)
+static int	should_run_command(void)
 {
-	g_sh.exit_value = 128 + signum;
-	if (signum == SIGINT)
+	char	*s;
+
+	s = g_sh.line;
+	while (*s)
 	{
-		if (g_sh.status & FLAG_INTERACTVE)
-		{
-			ft_putchar('\n');
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-			g_sh.prompt = get_prompt();
-			ft_printf("\r%s", g_sh.prompt);
-		}
+		if (!ft_isspace(*s))
+			return (1);
+		s++;
 	}
+	return (0);
 }
 
-void	init_signals(void)
+void	run_command(void)
 {
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
+	int		done;
+	t_cmd	cmd;
+
+	if (!should_run_command())
+		return ;
+	done = parse_command(&cmd);
+	if (done != 1)
+		return ;
+	if (ft_strcmp("env", g_sh.line) == 0)
+		env();
 }
