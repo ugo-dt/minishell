@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 22:15:06 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/25 22:46:42 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,8 @@ void	run_command(void)
 		return ;
 	if (ft_strcmp("env", g_sh.line) == 0)
 		env();
+	ft_printf("run command: ");
+	for (int i = 0;cmd.args && cmd.args[i];i++)
+		ft_printf("%s ", cmd.args[i]);
+	ft_printf("\n");
 }
