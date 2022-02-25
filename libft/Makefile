@@ -6,7 +6,7 @@
 #    By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/16 12:23:21 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/25 14:03:16 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/02/25 17:32:02 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,7 @@ SRCS		=	srcs/array/2d_array.c \
 
 HEADERS		=	-I include
 
-CC			=	@clang
+CC			=	clang
 FLAGS		=	-Wall -Wextra -Werror
 OBJS		=	$(SRCS:.c=.o)
 
@@ -113,7 +113,7 @@ $(NAME): text1 $(OBJS)
 	@ar rcs $(NAME) $(OBJS) && printf "\033[2K\r$(_green)$(NAME) ready!$(_default)\n"
 
 .c.o:
-	@echo "$(_default)$<..."
+	@echo "$(_default)Compiling $<..."
 	$(CC) $(FLAGS) $(HEADERS) -o $@ -c $<
 
 clean:

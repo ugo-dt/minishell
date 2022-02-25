@@ -6,16 +6,21 @@
 #    By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/25 13:39:06 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/25 15:53:40 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/02/25 17:32:59 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			:=	minishell
 
 SRCS			:=	srcs/init.c srcs/main.c srcs/prompt.c srcs/signal.c \
+					srcs/err.c \
 					srcs/builtins/export.c \
+					srcs/builtins/env.c \
 					srcs/parsing/parsing.c \
-					srcs/variables/env.c
+					srcs/variables/env.c \
+					srcs/variables/ft_getenv.c \
+					srcs/variables/ft_setenv.c
+
 OBJS			:= 	$(SRCS:.c=.o)
 
 LIBS			:=	-lreadline
@@ -26,7 +31,7 @@ LIBFT_HEADERS	:=	-I $(PATH_LIBFT)/include
 HEADERS			:= 	-I include \
 					$(LIBFT_HEADERS)
 
-CC				:=	@clang
+CC				:=	clang
 CFLAGS			:=	-Wall -Werror -Wextra $(MACROS)
 
 ARG				:=	-DARG_MAX=$(shell getconf ARG_MAX)

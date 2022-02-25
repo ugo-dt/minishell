@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_setenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 16:28:39 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 17:16:49 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/02/25 17:18:19 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/02/25 17:27:07 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "env.h"
 #include "shell.h"
+#include "err.h"
+#include "errno.h"
 
-int	env(void)
+int	ft_setenv(const char *name, const char *value, int replace)
 {
 	t_envl	*e;
-	t_envl	*temp;
 
-	e = g_sh.envp;
-	temp = NULL;
-	while (e)
+	if (!name || !(*name) || ft_strchr(name, '=') || !value || !(*value))
+		return (set_errno(EINVAL, -1));
+	if (replace)
 	{
-		if (e->value && ft_strcmp(e->value, "_") == 0)
-			temp = e;
-		else if (e->name && e->value)
-			ft_printf("%s=%s\n", e->name, e->value);
-		e = e->next;
+		e = new_envl(name, value, 1, NULL);
+		if (!e)
+			return (set_errno(ENOMEM, EXIT_FAILURE));
+		envl_pushback(&g_sh.envp, e);
 	}
-	if (temp && temp->name && temp->value)
-		ft_printf("%s=%s\n", temp->name = temp->value);
 	return (EXIT_SUCCESS);
 }

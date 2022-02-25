@@ -6,13 +6,13 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:16 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 16:15:18 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/25 17:30:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-t_envl	*new_envl(char *name, char *value, int export, t_envl *next)
+t_envl	*new_envl(const char *name, const char *value, int export, t_envl *next)
 {
 	t_envl	*envl;
 

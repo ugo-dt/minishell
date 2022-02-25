@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   err.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 16:28:39 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 17:16:49 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/02/25 17:21:13 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/02/25 17:28:40 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
-#include "env.h"
+#include "errno.h"
 #include "shell.h"
+#include "string.h"
 
-int	env(void)
+int	set_errno(int errnum, int ret)
 {
-	t_envl	*e;
-	t_envl	*temp;
-
-	e = g_sh.envp;
-	temp = NULL;
-	while (e)
-	{
-		if (e->value && ft_strcmp(e->value, "_") == 0)
-			temp = e;
-		else if (e->name && e->value)
-			ft_printf("%s=%s\n", e->name, e->value);
-		e = e->next;
-	}
-	if (temp && temp->name && temp->value)
-		ft_printf("%s=%s\n", temp->name = temp->value);
-	return (EXIT_SUCCESS);
+	errno = errnum;
+	g_sh.error_message = ft_strdup(strerror(errno));
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 16:12:41 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/25 17:10:19 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "sig.h"
 # include <string.h>
 # include "prompt.h"
+# include "builtin.h"
 
 static int	init_shell(const char **envp)
 {
@@ -57,6 +58,8 @@ int	main(int ac, const char **av, const char **envp)
 		g_sh.line = readline(g_sh.prompt);
 		if (!g_sh.line || !strcmp(g_sh.line, "exit"))
 			break ;
+		if (!strcmp(g_sh.line, "env"))
+			env();
 		ft_printf("line: %s\n", g_sh.line);
 		free(g_sh.line);
 		g_sh.line = NULL;
