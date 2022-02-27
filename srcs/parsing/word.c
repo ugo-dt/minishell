@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_setenv.c                                        :+:      :+:    :+:   */
+/*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 17:18:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 20:42:30 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/02/27 17:30:28 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/02/27 22:15:22 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include "shell.h"
-#include "error.h"
+#include "parser.h"
+#include <stdlib.h>
 
-int	ft_setenv(const char *name, const char *value, int replace)
+size_t	word_len(const char *word)
 {
-	t_envl	*e;
+	size_t	i;
+	char	q;
 
-	if (!name || !(*name) || ft_strchr(name, '=') || !value || !(*value))
+	i = 0;
+	while (word[i])
 	{
-		errno = EINVAL;
-		return (-1);
+		if (word[i] == '\'' || word[i] == '\"')
+		{
+			q = word[i++];
+			while (word[i] && word[i] != q)
+				i++;
+		}
+		else
+		{
+			if (is_token_separator(word[i]))
+				break ;
+			i++;
+		}
 	}
-	if (replace)
-	{
-		e = new_envl(name, value, 1, NULL);
-		if (!e)
-			return (set_errno(NULL, NULL, ENOMEM, -1));
-		envl_pushback(&g_sh.envp, e);
-	}
-	return (EXIT_SUCCESS);
+	return (i);
 }

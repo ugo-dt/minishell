@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:16:17 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 11:39:38 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 21:56:40 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "env.h"
 # include "history.h"
+# include "termios.h"
 
 typedef unsigned char			t_uchar;
 typedef unsigned int			t_uint;
@@ -38,14 +39,15 @@ typedef unsigned long long		t_ull;
 
 typedef struct g_shell
 {
-	FLAG		status;
-	t_envl		*envp;
-	char		**path;
-	char		*line;
-	char		*prompt;
-	t_uchar		exit_value;
-	char		*error_message;
-	t_history	history;
+	FLAG			status;
+	t_envl			*envp;
+	char			**path;
+	char			*line;
+	char			*prompt;
+	t_uchar			exit_value;
+	t_uint			error_message;
+	t_history		history;
+	struct termios	termios_save;
 }t_shell;
 
 extern t_shell					g_sh;

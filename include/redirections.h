@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 14:45:08 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 15:34:17 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 17:28:15 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ typedef struct s_redirection
 	struct s_redirection	*next;
 }t_redir;
 
-t_redir				*new_redirection(char *file, size_t size, unsigned int type);
-void				free_redir(t_redir *redir);
-void				ft_rediraddback(t_redir **lst, t_redir *new);
+t_redir	*new_redirection(const char *file, size_t size, unsigned int type);
+void	free_redir(t_redir *redir);
+void	ft_rediraddback(t_redir **lst, t_redir *new);
 
 /* REDIRECTIONS_H */
 #endif

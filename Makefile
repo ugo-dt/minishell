@@ -6,22 +6,24 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/25 13:39:06 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/27 15:07:32 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/02/27 22:02:07 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			:=	minishell
 
 SRCS			:=	srcs/init.c srcs/main.c srcs/prompt.c srcs/signal.c \
-					srcs/err.c srcs/execute_cmd.c srcs/history.c \
+					srcs/error.c srcs/execute_cmd.c srcs/history.c \
 					srcs/history_struct.c\
 					srcs/builtins/export.c \
 					srcs/builtins/env.c \
 					srcs/parsing/checks.c \
-					srcs/parsing/command.c \
 					srcs/parsing/lexer.c \
 					srcs/parsing/tokens.c \
+					srcs/parsing/parser.c \
 					srcs/parsing/redirections.c \
+					srcs/parsing/parameter_expansion.c \
+					srcs/parsing/word.c \
 					srcs/variables/env.c \
 					srcs/variables/ft_getenv.c \
 					srcs/variables/ft_setenv.c

@@ -6,12 +6,13 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 10:15:03 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 22:00:28 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute_cmd.h"
 #include "sig.h"
+#include "error.h"
 #include "minishell.h"
 #include "prompt.h"
 #include <stdio.h>
@@ -24,7 +25,7 @@ static int	init_shell(const char **envp)
 	init_signals();
 	init_env(envp);
 	g_sh.line = NULL;
-	g_sh.error_message = NULL;
+	g_sh.error_message = 0;
 	g_sh.exit_value = 0;
 	g_sh.status = FLAG_INTERACTVE | FLAG_LOOP;
 	return (1);
@@ -32,6 +33,8 @@ static int	init_shell(const char **envp)
 
 static int	exit_shell(void)
 {
+	if (g_sh.error_message)
+		set_error_message(get_error_message(), NULL, 1);
 	if (g_sh.prompt)
 		free(g_sh.prompt);
 	if (g_sh.line)

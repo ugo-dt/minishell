@@ -6,11 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:05:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/26 16:22:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 16:35:48 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "init.h"
+#include "error.h"
+#include <errno.h>
+#include <string.h>
 
 t_envl	*parse_envp_to_envl(const char *line)
 {
@@ -43,6 +46,13 @@ static void	no_envp(void)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		exit(set_errno(
+				NULL, // name
+				"error: could not get working directory", // error info
+				errno, // errnum
+				EXIT_FAILURE // exit value
+				));
 	g_sh.envp = new_envl("PWD", pwd, 1, NULL);
 	free(pwd);
 	envl_pushback(&g_sh.envp, parse_envp_to_envl("SHLVL=1"));

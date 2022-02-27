@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 19:59:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 15:06:34 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 22:24:18 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_token
 	char			*word;
 	size_t			wsize;
 	char			quoted;
+	int				expand;
 	struct s_token	*next;
 }t_token;
 
@@ -60,10 +61,50 @@ static inline int	is_token_separator(char c)
 		|| ft_isspace(c));
 }
 
+static inline int	is_env_separator(char c)
+{
+	return (is_token_separator(c) || c == '$');
+}
+
 /* parser */
 int					check_token_order(t_token **list);
+char				*parameter_expansion(const char *str,
+						size_t strsize, uint32_t type);
 
-/* lexer */
+/* Minishell lexer: token recognition
+ *
+ * cmd [arg]* [| cmd [arg]* ]*
+ *  [[> filename] [< filename] [>> filename] [<< 'heredoc limit']
+ * 
+ * Read each character from the input line one by one.
+ * 	1. If the end of input is recognized, the current token shall be delimited.
+ * 
+ * 	2. If the previous character was used as part of an operator and the current
+ * 		character is not quoted and can be used with the current characters to
+ * 		form an operator, it shall be used as part of that (operator) token.
+ * 
+ * 	3. If the previous character was used as part of an operator and the current
+ * 		character cannot be used with the current characters to form an operator,
+ * 		the operator containing the previous character shall be delimited
+ * 
+ * 	4. If the current character is single-quote or double-quote and it is not
+ * 		quoted, it shall affect quoting for subsequent characters up to the
+ * 		end of the quoted text.
+ * 
+ *	5. If the current character is an unquoted <newline>, the current token
+ * 		shall be delimited.
+ * 
+ *	6. If the previous character was part of a word, the current character
+ *		shall be appended to that word.
+ * 
+ * 	7. If the current character is an unquoted <blank>, any token containing
+ * 		the previous character is delimited and the current character shall
+ * 		be discarded.
+ * 
+ * 	8. If the current character is an unquoted '#', it and all subsequent
+ * 		characters shall be discarded as a comment.
+ * 
+ * 	9. The current character is used as the start of a new word. */
 t_token				*lexer(const char *line);
 
 /* Command parsing structure
@@ -96,9 +137,11 @@ static inline char	*quote_type(char q)
 }
 
 int					parse_command(t_cmd *cmd, const char *line);
+t_cmd				*new_cmd(void);
 
 int					check_quotes(const char *line);
-int					check_redirections(const char *line);
+
+size_t				word_len(const char *word);
 
 /* PARSER_H */
 #endif 

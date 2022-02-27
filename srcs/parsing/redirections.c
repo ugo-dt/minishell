@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 14:41:51 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 15:34:57 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 22:06:37 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include "redirections.h"
 #include <stdlib.h>
 
-t_redir	*new_redirection(char *file, size_t size, unsigned int type)
+t_redir	*new_redirection(const char *file, size_t size, unsigned int type)
 {
 	t_redir	*r;
 
 	r = ft_xmalloc(sizeof(t_redir));
 	if (file)
 	{
-		r->file = ft_strndup(file, size + 1);
+		r->file = parameter_expansion(file, size, type);
 		if (!r->file)
 		{
 			free(r);

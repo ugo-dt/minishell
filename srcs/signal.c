@@ -6,11 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 10:15:27 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 21:22:51 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sig.h"
+#include "termios.h"
+#include "error.h"
+#include "errno.h"
 
 void	sig_execve_handler(int signum)
 {
@@ -39,8 +42,27 @@ void	sig_handler(int signum)
 	}
 }
 
+void reset_the_terminal(void)
+{
+	tcsetattr(0, 0, &g_sh.termios_save);
+}
+
 void	init_signals(void)
 {
+	int				rc;
+	struct termios	termios_new;
+
+	rc = tcgetattr(0, &g_sh.termios_save);
+	if (rc)
+		exit(set_error_message("tcgetattr", strerror(errno), EXIT_FAILURE));
+	rc = atexit(reset_the_terminal);
+	if (rc)
+		exit(set_error_message("atexit", strerror(errno), EXIT_FAILURE));
+	termios_new = g_sh.termios_save;
+	termios_new.c_lflag &= ~ECHOCTL;
+	rc = tcsetattr(0, 0, &termios_new);
+	if (rc)
+		exit(set_error_message("tcsetattr", strerror(errno), EXIT_FAILURE));
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
