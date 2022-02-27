@@ -6,19 +6,17 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 19:24:41 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 10:15:03 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute_cmd.h"
 #include "sig.h"
 #include "minishell.h"
+#include "prompt.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-# include <string.h>
-# include "prompt.h"
-# include "builtin.h"
 
 static int	init_shell(const char **envp)
 {
@@ -36,11 +34,6 @@ static int	exit_shell(void)
 {
 	if (g_sh.prompt)
 		free(g_sh.prompt);
-	if (g_sh.error_message)
-	{
-		ft_putendl_fd(g_sh.error_message, STDERR_FILENO);
-		free(g_sh.error_message);
-	}
 	if (g_sh.line)
 		free(g_sh.line);
 	clear_env_list(&g_sh.envp);
@@ -60,13 +53,8 @@ int	main(int ac, const char **av, const char **envp)
 	{
 		g_sh.prompt = get_prompt();
 		g_sh.line = readline(g_sh.prompt);
-		if (!g_sh.line || !strcmp(g_sh.line, "exit"))
-			g_sh.status = g_sh.status & ~FLAG_LOOP;
-		else
-		{
-			add_command_to_history();
-			run_command();
-		}
+		add_command_to_history();
+		run_command();
 		if (g_sh.line)
 			free(g_sh.line);
 		g_sh.line = NULL;

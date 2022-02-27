@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:16:17 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 22:31:01 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/27 11:39:38 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,6 @@ typedef unsigned long long		t_ull;
 # define EXIT_NOT_FOUND			127
 # define EXIT_NOT_RECOVERABLE	131
 # define EXIT_OUT_OF_RANGE		255
-
-typedef struct s_command
-{
-	char	**params;
-	char	**args;
-	int	nb_words;
-}t_cmd;
 
 typedef struct g_shell
 {

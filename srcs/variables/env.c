@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:16 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 19:25:23 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/26 16:06:50 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ t_envl	*new_envl(const char *name, const char *val, int export, t_envl *next)
 	{
 		envl->value = ft_strdup(val);
 		if (!envl->value)
+		{
+			if (envl->name)
+				free(envl->name);
+			free(envl);
 			return (NULL);
+		}
 	}
 	envl->export = export;
 	envl->next = next;

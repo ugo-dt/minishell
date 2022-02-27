@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_setenv.c                                        :+:      :+:    :+:   */
+/*   ft_upper.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 17:18:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/26 10:09:20 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/02/26 10:05:16 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/02/26 10:05:27 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include "shell.h"
-#include "error.h"
+#include "libft.h"
+#include "_ft_string.h"
 
-int	ft_setenv(const char *name, const char *value, int replace)
+char	*ft_upper(char *s)
 {
-	t_envl	*e;
+	unsigned int	i;
 
-	if (!name || !(*name) || ft_strchr(name, '=') || !value || !(*value))
-		return (set_errno(NULL, NULL, EINVAL, -1));
-	if (replace)
+	if (!s)
+		return (NULL);
+	i = 0;
+	while (s[i])
 	{
-		e = new_envl(name, value, 1, NULL);
-		if (!e)
-			return (set_errno(NULL, NULL, ENOMEM, -1));
-		envl_pushback(&g_sh.envp, e);
+		if (ft_islower(s[i]))
+			*s = ft_toupper(s[i]);
+		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (s);
 }

@@ -6,7 +6,7 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/25 13:39:06 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/25 22:03:57 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/02/27 15:07:32 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,11 @@ SRCS			:=	srcs/init.c srcs/main.c srcs/prompt.c srcs/signal.c \
 					srcs/history_struct.c\
 					srcs/builtins/export.c \
 					srcs/builtins/env.c \
-					srcs/parsing/parser.c \
+					srcs/parsing/checks.c \
+					srcs/parsing/command.c \
+					srcs/parsing/lexer.c \
+					srcs/parsing/tokens.c \
+					srcs/parsing/redirections.c \
 					srcs/variables/env.c \
 					srcs/variables/ft_getenv.c \
 					srcs/variables/ft_setenv.c
@@ -33,7 +37,7 @@ HEADERS			:= 	-I include \
 					$(LIBFT_HEADERS)
 
 CC				:=	clang
-CFLAGS			:=	-Wall -Werror -Wextra $(MACROS)
+CFLAGS			:=	-Wall -Werror -Wextra $(MACROS) -fsanitize=address -DDEBUG
 
 ARG				:=	-DARG_MAX=$(shell getconf ARG_MAX)
 ifeq ($(OS), Linux)

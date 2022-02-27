@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:42:46 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/06 13:00:23 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/26 10:06:36 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ extern size_t	ft_len_to_char(const char *s, char c);
 /* Returns the length from s to the next space character (using ft_isspace())
  * or the next '\\0' character. */
 size_t			ft_len_to_space(const char *s);
+
+char			*ft_lower(char *s);
+
+char			*ft_upper(char *s);
+
 /* 
  * The ft_str_tolower() function creates a NULL-terminated lowercase copy of
  * the string src.

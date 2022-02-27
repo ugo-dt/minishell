@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:05:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 19:26:41 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/26 16:22:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_envl	*parse_envp_to_envl(const char *line)
 {
-	t_uint	i;
+	size_t	i;
 	char	*name;
 	char	*value;
 	t_envl	*envl;

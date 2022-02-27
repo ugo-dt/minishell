@@ -6,7 +6,7 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/16 12:23:21 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/25 22:03:39 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/02/26 10:08:07 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,8 @@ SRCS		=	srcs/array/2d_array.c \
 				srcs/mem/ft_xmalloc.c \
 				srcs/string/ft_atoi.c \
 				srcs/string/ft_itoa.c \
+				srcs/string/ft_lower.c \
+				srcs/string/ft_upper.c \
 				srcs/string/ft_len_to_char.c \
 				srcs/string/ft_len_to_space.c \
 				srcs/string/ft_str_tolower.c \

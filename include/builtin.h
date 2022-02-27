@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:11:15 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 22:02:30 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/26 20:44:24 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "shell.h"
+# include "parser.h"
 # include <stdlib.h>
 
 /* cd builtin
