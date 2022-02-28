@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 19:22:25 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 20:56:54 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ t_envl	*new_envl(const char *name, const char *val, int export, t_envl *next);
 void	envl_delone(t_envl *envl);
 void	clear_env_list(t_envl **start);
 void	envl_pushback(t_envl **lst, t_envl *new);
+t_envl	*parse_env_line_to_envl(const char *line);
 
 int		ft_setenv(const char *name, const char *value, int replace);
 char	*ft_getenv(const char *name);
+int		ft_unsetenv(const char *name);
 
 /* ENV_H */
 #endif

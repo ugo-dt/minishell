@@ -3,62 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:53:43 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 15:05:48 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 21:42:56 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "builtin.h"
+#include "error.h"
 
-/*
-void display(char **array, int size){
-  for(int i=0; i<size; i++){
-    printf("%s ", array[i]);
-  }
-  printf("\n");
-}
-
-int	main(void)
+static void	sort_array(t_envl **array, size_t size)
 {
-	int		i;
-	int		j;
-	char	**array;
-	char	s1[] = "salut";
-	char	s2[] = "les";
-	char	s3[] = "amis";
-	char	*temp;
-	int		size = 3;
+	size_t	i;
+	t_envl	*temp;
 
-	array = malloc(sizeof(char *) * (size + 1));
-	if (!array)
-		return (1);
-	array[0] = s1;
-	array[1] = s2;
-	array[2] = s3;
-	array[3] = NULL;
-	display(array, size);
+	i = -1;
+	while (++i < size - 1)
+	{
+		if (ft_strcmp(array[i]->name, array[i + 1]->name) > 0)
+		{
+			temp = array[i];
+			array[i] = array[i + 1];
+			array[i + 1] = temp;
+			i = -1;
+		}
+	}
 	i = 0;
 	while (i < size)
 	{
-    	j = 0;
-		while (j < size - 1 - i)
-		{
-			if(strcmp(array[j], array[j+1]) > 0)
-			{
-				temp = array[j];
-				array[j] = array[j + 1];
-				array[j + 1] = temp;
-			}
-			j++;
-		}
+		if (array[i]->name)
+			ft_printf("declare -x %s=\"", array[i]->name);
+		if (array[i]->value)
+			ft_printf("%s", array[i]->value);
+		ft_printf("\"\n");
 		i++;
 	}
-	display(array, size);
-	free(array);
-	return (0);
 }
-*/
+
+int	no_arguments(void)
+{
+	t_envl	*e;
+	t_envl	**array;
+	size_t	i;
+	size_t	size;
+
+	size = 0;
+	e = g_sh.envp;
+	while (e)
+	{
+		if (ft_strcmp(e->name, "_") || ft_strlen(e->name) != 1)
+			size++;
+		e = e->next;
+	}
+	array = ft_xmalloc(sizeof(t_envl *) * size);
+	e = g_sh.envp;
+	i = 0;
+	while (e)
+	{
+		if (ft_strcmp(e->name, "_") || ft_strlen(e->name) != 1)
+			array[i++] = e;
+		e = e->next;
+	}
+	sort_array(array, size);
+	free(array);
+	return (EXIT_SUCCESS);
+}
+
+int	export(t_cmd *cmd)
+{
+	size_t	i;
+
+	if (cmd->args && !cmd->args[1])
+		return (no_arguments());
+	if (cmd->nb_options)
+		return (show_error(BUILTIN_EXPORT, BAD_OPTION,
+				cmd->args[1][1], EXPORT_USAGE));
+	i = 1;
+	while (i < cmd->nb_args)
+	{
+		if (ft_strchr(cmd->args[i], '?')
+			|| ft_len_to_char(cmd->args[i], '=') < 1)
+			ft_dprintf(STDERR_FILENO, "%s: %s: '%s': %s\n", SHELL_NAME,
+				BUILTIN_UNSET, cmd->args[i], INVALID_IDENTIFIER);
+		else if (ft_strchr(cmd->args[i], '='))
+			envl_pushback(&g_sh.envp, parse_env_line_to_envl(cmd->args[i]));
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}

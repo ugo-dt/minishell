@@ -6,12 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 14:45:08 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 17:28:15 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 21:31:36 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REDIRECTIONS_H
 # define REDIRECTIONS_H
+
+# include <stdlib.h>
 
 # define IO_FILE_IN			0
 # define IO_FILE_OUT		1

@@ -6,12 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 12:32:03 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 22:34:18 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 22:20:52 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "shell.h"
+
+static int	parse_tokens_to_arguments(t_cmd *cmd, t_token **list);
 
 /*
 void	print_token_details(t_token *t)
@@ -60,9 +62,9 @@ static int	get_arguments(t_cmd *cmd, t_token **list)
 		if (temp->type == TOKEN_PIPE)
 			break ;
 		if (!prev && temp->type == TOKEN_WORD)
-			cmd->args[i++] = parameter_expansion(temp->word, temp->wsize, 0);
+			cmd->args[i++] = expand_param(temp->word, temp->wsize, 0);
 		else if (prev && prev->type == TOKEN_WORD && temp->type == TOKEN_WORD)
-			cmd->args[i++] = parameter_expansion(temp->word, temp->wsize, prev->type);
+			cmd->args[i++] = expand_param(temp->word, temp->wsize, prev->type);
 		prev = temp;
 		temp = temp->next;
 	}
@@ -71,15 +73,8 @@ static int	get_arguments(t_cmd *cmd, t_token **list)
 	return (1);
 }
 
-static int	parse_tokens_to_arguments(t_cmd *cmd, t_token **list)
+static void	la_norme_tu_connais(t_token	*temp, t_token *prev, t_cmd *c)
 {
-	t_token	*temp;
-	t_token	*prev;
-	t_cmd	*c;
-
-	c = cmd;
-	temp = *list;
-	prev = NULL;
 	while (temp)
 	{
 		if (temp->type == TOKEN_PIPE)
@@ -96,45 +91,60 @@ static int	parse_tokens_to_arguments(t_cmd *cmd, t_token **list)
 			prev = temp;
 			temp = temp->next;
 			if (temp)
-				ft_rediraddback(&c->redir, new_redirection(temp->word, temp->wsize, prev->type));
+				ft_rediraddback(&c->redir,
+					new_redirection(temp->word, temp->wsize, prev->type));
 		}
 		prev = temp;
 		temp = temp->next;
 	}
-	get_arguments(c, list);
+}
+
+static int	parse_tokens_to_arguments(t_cmd *cmd, t_token **list)
+{
+	la_norme_tu_connais(*list, NULL, cmd);
+	get_arguments(cmd, list);
 	return (1);
 }
 
-static int	parse_string(t_cmd *cmd, const char *line)
+int	parse_command(t_cmd *cmd, const char *line)
 {
-	size_t	i;
 	t_token	*tokenlist;
 
-	i = 0;
-	while (ft_isspace(line[i]))
-		i++;
-	tokenlist = lexer(line);
+	if (!line || !cmd)
+		return (0);
+	tokenlist = lexer(line, 0);
 	if (!tokenlist)
 		return (0);
 	if (check_token_order(&tokenlist) != 0)
 		return (0);
 	parse_tokens_to_arguments(cmd, &tokenlist);
 	clear_tokenlist(&tokenlist);
-	return (1);
-}
-
-int	parse_command(t_cmd *cmd, const char *line)
-{
-	if (!line)
-		return (0);
-	ft_memset(cmd, 0, sizeof(t_cmd));
-	if (!parse_string(cmd, line))
-		return (0);
 	if (cmd->args)
 	{
 		cmd->exec_name = cmd->args[0];
 		if (cmd->nb_args > 0)
+		{
 			ft_setenv("_", cmd->args[cmd->nb_args - 1], 1);
+			get_options(cmd);
+		}
 	}
+#ifdef DEBUG
+	t_redir	*r;
+	t_cmd	*c;
+
+	c = cmd;
+	while (c)
+	{
+		ft_printf("DEBUG: -------- COMMAND --------\n");
+		ft_printf("DEBUG: command:    %s\n", c->exec_name);
+		for (size_t i = 1;i < c->nb_args; i++)
+			ft_printf("DEBUG: argument %d: %s\n", i, c->args[i]);
+
+		for (r = c->redir;r;r = r->next)
+			ft_printf("DEBUG: redirect %d: %s\n", r->mode, r->file);
+		ft_printf("DEBUG: --------   END   --------\n");
+		c = c->next;
+	}
+#endif
 	return (1);
 }

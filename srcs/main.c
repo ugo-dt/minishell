@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 22:00:28 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 13:14:30 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static int	init_shell(const char **envp)
 
 static int	exit_shell(void)
 {
-	if (g_sh.error_message)
-		set_error_message(get_error_message(), NULL, 1);
 	if (g_sh.prompt)
 		free(g_sh.prompt);
 	if (g_sh.line)
@@ -62,6 +60,5 @@ int	main(int ac, const char **av, const char **envp)
 			free(g_sh.line);
 		g_sh.line = NULL;
 	}
-	ft_printf("exit\n");
 	return (exit_shell());
 }

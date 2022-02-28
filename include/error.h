@@ -6,30 +6,32 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 17:25:01 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 21:55:57 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 13:02:47 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_H
 # define ERROR_H
 
-# include "errno.h"
+# include <errno.h>
 
-# define FATAL_ERROR				0x00000001
-# define TOO_MANY_ARGS				0x00000002
-# define NOT_ENOUGH_ARGS			0x00000004
-# define BAD_OPTION					0x00000004
-# define EXIT_NUM_ARG_REQUIRED		0x00000008
-# define HOME_NOT_SET				0x00000016
-# define OLDPWD_NOT_SET				0x00000032
-# define CMD_NOT_FOUND				0x00000064
-# define EXPORT_USAGE				0x00000128
-# define UNSET_USAGE				0x00000256
-# define INVALID_IDENTIFIER			0x00000512
+# define FATAL_ERROR				"critical error"
+# define TOO_MANY_ARGS				"too many arguments"
+# define NOT_ENOUGH_ARGS			"not enough arguments"
+# define BAD_OPTION					"bad option"
+# define EXIT_NUM_ARG_REQUIRED		"numeric argument required"
+# define HOME_NOT_SET				"HOME not set"
+# define OLDPWD_NOT_SET				"OLDPWD not set"
+# define CMD_NOT_FOUND				"command not found"
+# define EXPORT_USAGE				"usage: export [name[=value]]"
+# define UNSET_USAGE				"usage: unset [name]"
+# define INVALID_IDENTIFIER			"not a valid indentifier"
 
-char	*get_error_message(void);
+# define EXIT_NOT_FOUND				127
+
 int		set_error_message(char *msg, char *info, int ret);
 int		set_errno(char *name, char *info, int errnum, int ret);
+void	*set_errno_ptr(char *name, char *info, int errnum, void *ret);
 
 /* ERROR_H */
 #endif

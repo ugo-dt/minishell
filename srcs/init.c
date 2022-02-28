@@ -6,36 +6,15 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:05:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 16:35:48 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 21:32:35 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "init.h"
 #include "error.h"
+#include "env.h"
 #include <errno.h>
 #include <string.h>
-
-t_envl	*parse_envp_to_envl(const char *line)
-{
-	size_t	i;
-	char	*name;
-	char	*value;
-	t_envl	*envl;
-
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (line[i] && line[i] != '=')
-		i++;
-	name = ft_strndup(line, i + 1);
-	name[i] = '\0';
-	i++;
-	value = ft_strdup(&line[i]);
-	envl = new_envl(name, value, 1, NULL);
-	free(name);
-	free(value);
-	return (envl);
-}
 
 /* TODO
 PWD = getpwd
@@ -55,13 +34,28 @@ static void	no_envp(void)
 				));
 	g_sh.envp = new_envl("PWD", pwd, 1, NULL);
 	free(pwd);
-	envl_pushback(&g_sh.envp, parse_envp_to_envl("SHLVL=1"));
-	envl_pushback(&g_sh.envp, parse_envp_to_envl("_=minishell"));
+	envl_pushback(&g_sh.envp, parse_env_line_to_envl("SHLVL=1"));
+	envl_pushback(&g_sh.envp, parse_env_line_to_envl("_=minishell"));
+}
+
+static void	increment_shlvl(void)
+{
+	int		nb;
+	char	*inc;
+
+	nb = ft_atoi(getenv("SHLVL"));
+	if (nb < 0)
+		nb = 0;
+	inc = ft_itoa(nb + 1);
+	if (!inc)
+		return ;
+	ft_setenv("SHLVL", inc, 1);
+	free(inc);
 }
 
 void	init_env(const char **envp)
 {
-	unsigned int	i;
+	size_t	i;
 
 	if (!envp || !(*envp))
 	{
@@ -71,7 +65,11 @@ void	init_env(const char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		envl_pushback(&g_sh.envp, parse_envp_to_envl(envp[i]));
+		if (ft_strcmp(envp[i], "SHLVL") == 0
+			&& ft_len_to_char(envp[i], '=') == 5)
+			increment_shlvl();
+		else
+			envl_pushback(&g_sh.envp, parse_env_line_to_envl(envp[i]));
 		i++;
 	}
 }

@@ -1,38 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_unsetenv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 16:28:39 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 20:54:00 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/02/28 16:45:58 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/02/28 21:01:48 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include "env.h"
-#include "error.h"
+#include "errno.h"
 #include "shell.h"
 
-int	env(t_cmd *cmd)
+int	ft_unsetenv(const char *name)
 {
-	t_envl	*e;
+	t_envl	*lst;
+	t_envl	*prev;
 
-	if (cmd->nb_options && cmd->args && cmd->args[1])
+	if (!name || !(*name) || ft_strchr(name, '='))
 	{
-		if (cmd->args[1][1] == '-')
-			return (unrecognized_option(BUILTIN_ENV, cmd->args[1], NULL));
-		else
-			return (show_error(BUILTIN_ENV, BAD_OPTION, cmd->args[1][1], NULL));
+		errno = EINVAL;
+		return (-1);
 	}
-	if (cmd->args && cmd->args[1])
-		return (show_error(BUILTIN_ENV, TOO_MANY_ARGS, 0, NULL));
-	e = g_sh.envp;
-	while (e)
+	lst = g_sh.envp;
+	prev = NULL;
+	while (lst)
 	{
-		ft_printf("%s=%s\n", e->name, e->value);
-		e = e->next;
+		if (ft_strcmp(lst->name, name) == 0
+			&& ft_strlen(name) == ft_strlen(lst->name))
+		{
+			if (prev)
+				prev->next = lst->next;
+			envl_delone(lst);
+			return (EXIT_SUCCESS);
+		}
+		prev = lst;
+		lst = lst->next;
 	}
 	return (EXIT_SUCCESS);
 }

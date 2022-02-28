@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 10:36:50 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 22:30:11 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 22:06:12 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	lexer_chevrons(const char *s, size_t *i, t_token *lst, TOKEN *last)
 	return (0);
 }
 
-static void lexer_word(const char *line, size_t *i, t_token **tokenlist)
+static void	lexer_word(const char *line, size_t *i, t_token **tokenlist)
 {
 	char	quote;
 	size_t	size;
@@ -48,44 +48,55 @@ static void lexer_word(const char *line, size_t *i, t_token **tokenlist)
 	*i += size;
 }
 
-t_token	*lexer(const char *line)
+static int	more_lexer(
+	const char *line, size_t *i, t_token **tokenlist, TOKEN *last_token)
 {
-	size_t	i;
+	if (line[*i] == '>' || line[*i] == '<')
+	{
+		if (lexer_chevrons(line, &(*i), *tokenlist, &(*last_token)) == 1)
+			return (1);
+	}
+	else if (ft_isspace(line[*i]))
+	{
+		*last_token = NO_TOKEN;
+		(*i)++;
+		return (1);
+	}
+	else if (line[*i] == '|')
+		*last_token = TOKEN_PIPE;
+	else
+	{
+		*last_token = TOKEN_WORD;
+		lexer_word(line, &(*i), &(*tokenlist));
+		return (1);
+	}
+	return (0);
+}
+
+t_token	*lexer(const char *line, size_t i)
+{
+	int		done;
 	t_token	*tokenlist;
 	TOKEN	last_token;
 
-	i = 0;
 	tokenlist = NULL;
 	last_token = -1;
 	while (line[i])
 	{
-		if (line[i] == '\0' || line[i] == '#') // end of input
+		if (line[i] == '\0' || line[i] == '#')
 		{
 			tokenlist_add_back(&tokenlist, new_token(NO_TOKEN, NULL, 0));
 			break ;
 		}
-		else if (line[i] == '\n') // end of input, newline
+		else if (line[i] == '\n')
 			tokenlist_add_back(&tokenlist, new_token(TOKEN_NEWLINE, NULL, 0));
-		else if (line[i] == '>' || line[i] == '<') // redirections
+		else
 		{
-			if (lexer_chevrons(line, &i, tokenlist, &last_token) == 1)
-				continue;
+			done = more_lexer(line, &i, &tokenlist, &last_token);
+			if (done == 1)
+				continue ;
 		}
-		else if (ft_isspace(line[i])) // discard spaces and tabulations
-		{
-			last_token = NO_TOKEN;
-			i++;
-			continue ;
-		}
-		else if (line[i] == '|') // pipelines: command output is redirected to input of the next command
-			last_token = TOKEN_PIPE;
-		else // simple word (command name, options, arguments, filenames for redirections)
-		{
-			last_token = TOKEN_WORD;
-			lexer_word(line, &i, &tokenlist);
-			continue ;
-		}
-		tokenlist_add_back(&tokenlist, new_token(last_token, NULL, 0)); // chevrons and pipes use this
+		tokenlist_add_back(&tokenlist, new_token(last_token, NULL, 0));
 		i++;
 	}
 	return (tokenlist);

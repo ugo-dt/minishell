@@ -6,13 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 19:59:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 22:24:18 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 22:15:27 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+# include "cmd.h"
 # include "libft.h"
 # include "redirections.h"
 # include "shell.h"
@@ -68,7 +69,7 @@ static inline int	is_env_separator(char c)
 
 /* parser */
 int					check_token_order(t_token **list);
-char				*parameter_expansion(const char *str,
+char				*expand_param(const char *str,
 						size_t strsize, uint32_t type);
 
 /* Minishell lexer: token recognition
@@ -105,29 +106,10 @@ char				*parameter_expansion(const char *str,
  * 		characters shall be discarded as a comment.
  * 
  * 	9. The current character is used as the start of a new word. */
-t_token				*lexer(const char *line);
+t_token				*lexer(const char *line, size_t i);
 
-/* Command parsing structure
- * 
- * @param exec_name The first word is always the name of the executable
- * @param options String containing all of the options - starts with '-',
- * first word that does not is considered as an argument (you cannot have
- * options after arguments)
- * @param args Command arguments - always after the options
- * @param redir	Input/output redirection
- * @param fd_heredoc Heredoc pipe
- * @param next Next command connected with a pipe */
-typedef struct s_command
-{
-	char				*exec_name;
-	char				*options;
-	char				**args;
-	size_t				nb_args;
-	t_redir				*redir;
-	int					heredoc;
-	int					fd_heredoc[2];
-	struct s_command	*next;
-}t_cmd;
+/* quotes */
+char				*remove_quotes(char *str);
 
 static inline char	*quote_type(char q)
 {
@@ -138,6 +120,8 @@ static inline char	*quote_type(char q)
 
 int					parse_command(t_cmd *cmd, const char *line);
 t_cmd				*new_cmd(void);
+
+void				get_options(t_cmd *cmd);
 
 int					check_quotes(const char *line);
 

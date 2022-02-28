@@ -6,10 +6,11 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 22:32:36 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 22:12:41 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "cmd.h"
 #include "execute_cmd.h"
 #include "shell.h"
 #include "builtin.h"
@@ -19,6 +20,12 @@ static int	should_run_command(void)
 {
 	char	*s;
 
+	if (!g_sh.line)
+	{
+		g_sh.status &= ~FLAG_LOOP;
+		ft_putendl("exit");
+		return (0);
+	}
 	s = g_sh.line;
 	if (check_quotes(s) != 0)
 		return (0);
@@ -31,61 +38,47 @@ static int	should_run_command(void)
 	return (0);
 }
 
-static void	clear_cmd(t_cmd *cmd)
+static void	execute_process(t_cmd *cmd)
 {
-	if (cmd->next)
-		clear_cmd(cmd->next);
-	if (cmd->args)
-		ft_free_array((void **)cmd->args);
-	if (cmd->options)
-		free(cmd->options);
-	if (cmd->redir)
-		free_redir(cmd->redir);
+	(void)cmd;
+	printf("TODO: new process here\n");
+	exit(0);
 }
 
-t_cmd	*new_cmd(void)
+static void	execute_command(t_cmd *cmd)
 {
-	t_cmd	*cmd;
+	pid_t	pid;
+	int		status;
 
-	cmd = ft_xmalloc(sizeof(t_cmd));
-	ft_memset(cmd, 0, sizeof(t_cmd));
-	return (cmd);
+	pid = fork();
+	if (pid < 0)
+		return ;
+	if (pid == 0)
+		execute_process(cmd);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		g_sh.exit_value = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		g_sh.exit_value = 128 + WTERMSIG(status);
+		if (WTERMSIG(status) == SIGINT)
+			ft_putchar('\n');
+		if (WTERMSIG(status) == SIGQUIT)
+			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+	}
 }
 
 void	run_command(void)
 {
-	int		done;
 	t_cmd	cmd;
 
-	if (!g_sh.line || !ft_strcmp(g_sh.line, "exit"))
-	{
-		g_sh.status = g_sh.status & ~FLAG_LOOP;
-		return ;
-	}
+	ft_memset(&cmd, 0, sizeof(t_cmd));
 	if (!should_run_command())
 		return ;
-	done = parse_command(&cmd, g_sh.line);
-	if (done != 1)
+	if (parse_command(&cmd, g_sh.line) != 1)
 		return ;
-	if (ft_strcmp("env", g_sh.line) == 0)
-		env();
-#ifdef DEBUG
-	t_redir	*r;
-	t_cmd	*c;
-
-	c = &cmd;
-	while (c)
-	{
-		ft_printf("DEBUG: -------- COMMAND --------\n");
-		ft_printf("DEBUG: command:\t%s\n", c->exec_name);
-		for (size_t i = 1;i < c->nb_args; i++)
-			ft_printf("DEBUG: Argument %d:\t%s\n", i, c->args[i]);
-
-		for (r = c->redir;r;r = r->next)
-			ft_printf("DEBUG: Redir %d:\t%s\n", r->mode, r->file);
-		ft_printf("DEBUG: --------   END   --------\n");
-		c = c->next;
-	}
-#endif
+	if (try_builtin_first(&cmd))
+		return ;
+	execute_command(&cmd);
 	clear_cmd(&cmd);
 }

@@ -6,36 +6,56 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:16 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/26 16:06:50 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/02/28 20:16:18 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+#include "error.h"
+#include <errno.h>
 
 t_envl	*new_envl(const char *name, const char *val, int export, t_envl *next)
 {
 	t_envl	*envl;
 
 	envl = ft_xmalloc(sizeof(t_envl));
-	if (name)
+	envl->name = ft_strdup(name);
+	if (!envl->name)
 	{
-		envl->name = ft_strdup(name);
-		if (!envl->name)
-			return (NULL);
+		free(envl);
+		return (set_errno_ptr(NULL, "error", ENOMEM, NULL));
 	}
-	if (val)
+	envl->value = ft_strdup(val);
+	if (!envl->value)
 	{
-		envl->value = ft_strdup(val);
-		if (!envl->value)
-		{
-			if (envl->name)
-				free(envl->name);
-			free(envl);
-			return (NULL);
-		}
+		free(envl->name);
+		free(envl);
+		return (set_errno_ptr(NULL, "error", ENOMEM, NULL));
 	}
 	envl->export = export;
 	envl->next = next;
+	return (envl);
+}
+
+t_envl	*parse_env_line_to_envl(const char *line)
+{
+	size_t	i;
+	char	*name;
+	char	*value;
+	t_envl	*envl;
+
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (line[i] && line[i] != '=')
+		i++;
+	name = ft_strndup(line, i + 1);
+	name[i] = '\0';
+	i++;
+	value = ft_strdup(&line[i]);
+	envl = new_envl(name, value, 1, NULL);
+	free(name);
+	free(value);
 	return (envl);
 }
 
