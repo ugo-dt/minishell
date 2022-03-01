@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   pipe.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 14:07:40 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 18:17:03 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/03/01 18:14:17 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/03/01 19:47:51 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef PIPE_H
+# define PIPE_H
 
-# include "init.h"
+# include "cmd.h"
+# include <stdlib.h>
 
-t_shell	g_sh;
+typedef struct s_pipe
+{
+	int		**pipe;
+	size_t	nb_pipes;
+	size_t	nb_cmd;
+	pid_t	*pid;
+	int		exit_status;
+}t_pipe;
 
-void	start_to_parse_command(void);
+void	dup2_error(void);
+void	init_pipes(t_pipe *p, t_cmd *cmd);
+void	free_pipe(int **arr, size_t max);
+void	close_pipes(t_pipe *p);
 
-/* MINISHELL_H */
+/* PIPE_H */
 #endif

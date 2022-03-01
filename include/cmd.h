@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:37:20 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 17:22:37 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 21:08:23 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ void	clear_cmd(t_cmd *cmd);
 
 size_t	nb_pipes(t_cmd *cmd);
 size_t	nb_redir(t_cmd *cmd);
+
+void	execute_cmd(t_cmd *cmd);
+int		do_redirections(t_cmd *cmd);
+void	find_file_in_path(t_cmd *cmd, char **path);
 
 /* CMD_H */
 #endif

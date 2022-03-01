@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 12:32:03 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 12:29:33 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 21:25:15 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,24 +128,5 @@ int	parse_command(t_cmd *cmd, const char *line)
 			get_options(cmd);
 		}
 	}
-/*
-#ifdef DEBUG
-	t_redir	*r;
-	t_cmd	*c;
-
-	c = cmd;
-	while (c)
-	{
-		ft_printf("DEBUG: -------- COMMAND --------\n");
-		ft_printf("DEBUG: command:    %s\n", c->exec_name);
-		for (size_t i = 1;i < c->nb_args; i++)
-			ft_printf("DEBUG: argument %d: %s\n", i, c->args[i]);
-
-		for (r = c->redir;r;r = r->next)
-			ft_printf("DEBUG: redirect %d: %s\n", r->mode, r->file);
-		ft_printf("DEBUG: --------   END   --------\n");
-		c = c->next;
-	}
-#endif*/
 	return (1);
 }

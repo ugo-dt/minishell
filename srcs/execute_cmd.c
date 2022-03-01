@@ -5,88 +5,69 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 13:13:18 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/03/01 21:25:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
-#include "execute_cmd.h"
+#include "env.h"
+#include "libft.h"
+#include "error.h"
 #include "shell.h"
-#include "builtin.h"
-#include "parser.h"
-#include <sys/wait.h>
+#include "heredoc.h"
+#include "pipe.h"
 
-static int	should_run_command(void)
+void	do_pipes(t_cmd *cmd, char **path, size_t pipes)
 {
-	char	*s;
+	size_t	i;
+	t_pipe	p;
 
-	if (!g_sh.line)
+	i = 0;
+	(void)p;
+#ifdef DEBUG
+	t_redir	*r;
+	t_cmd	*c;
+
+	c = cmd;
+	while (c)
 	{
-		g_sh.status &= ~FLAG_LOOP;
-		ft_putendl("exit");
-		return (0);
+		ft_printf("DEBUG: -------- COMMAND --------\n");
+		ft_printf("DEBUG: command:    %s\n", c->exec_name);
+		for (size_t i = 1;i < c->nb_args; i++)
+			ft_printf("DEBUG: argument %d: %s\n", i, c->args[i]);
+
+		for (r = c->redir;r;r = r->next)
+			ft_printf("DEBUG: redirect %d: %s\n", r->mode, r->file);
+		ft_printf("DEBUG: --------   END   --------\n");
+		c = c->next;
 	}
-	s = g_sh.line;
-	if (check_quotes(s) != 0)
-		return (0);
-	while (*s)
-	{
-		if (!ft_isspace(*s))
-			return (1);
-		s++;
-	}
-	return (0);
+#endif
+	(void)path;
+	(void)pipes;
 }
 
-static void	execute_process(t_cmd *cmd)
+void	execute_cmd(t_cmd *cmd)
 {
-	int		status;
+	size_t	pipes;
+	char	**path;
 
-	(void)cmd;
-	printf("TODO: new process here\n");
-	signal(SIGQUIT, SIG_DFL);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		exit(EXIT_FAILURE);
-	if (g_sh.exit_value != EXIT_SUCCESS)
-		exit(EXIT_FAILURE);
-	exit(0);
-}
-
-static void	execute_command(t_cmd *cmd)
-{
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid < 0)
-		return ;
-	if (pid == 0)
-		execute_process(cmd);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_sh.exit_value = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	path = ft_split(ft_getenv("PATH"), ':');
+	pipes = nb_pipes(cmd);
+	if (pipes < 1)
 	{
-		g_sh.exit_value = 128 + WTERMSIG(status);
-		if (WTERMSIG(status) == SIGINT)
-			ft_putchar('\n');
-		if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+		if (!do_redirections(cmd))
+			exit(EXIT_FAILURE);
+		find_file_in_path(cmd, path);
+		execve(cmd->exec_name, cmd->args, path);
+		perror("execve");
+		set_error_message(cmd->exec_name, CMD_NOT_FOUND, 0);
+		free(path);
+		clear_cmd(cmd);
+		exit(EXIT_NOT_FOUND);
 	}
-}
-
-void	run_command(void)
-{
-	t_cmd	cmd;
-
-	ft_memset(&cmd, 0, sizeof(t_cmd));
-	if (!should_run_command())
-		return ;
-	if (parse_command(&cmd, g_sh.line) != 1)
-		return ;
-	if (try_builtin_first(&cmd))
-		return ;
-	execute_command(&cmd);
-	clear_cmd(&cmd);
+	do_pipes(cmd, path, pipes);
+	free(path);
+	clear_cmd(cmd);
+	exit(g_sh.exit_value);
 }

@@ -6,33 +6,44 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/25 13:39:06 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/03/01 15:51:05 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/03/01 21:25:26 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			:=	minishell
 
-SRCS			:=	srcs/init.c srcs/main.c srcs/prompt.c srcs/signal.c \
-					srcs/error.c srcs/execute_cmd.c srcs/history.c srcs/cmd.c \
-					srcs/history_struct.c srcs/find_builtin.c \
+SRCS			:=	srcs/main.c \
 					srcs/builtin_redirections.c \
+					srcs/cmd.c \
+					srcs/error.c \
+					srcs/execute_cmd.c \
+					srcs/find_builtin.c \
+					srcs/find_file.c \
+					srcs/heredoc.c \
+					srcs/history.c \
+					srcs/history_struct.c \
+					srcs/init.c \
+					srcs/parse_command.c \
+					srcs/prompt.c \
+					srcs/redirections.c \
+					srcs/signal.c \
 					srcs/builtins/cd.c \
 					srcs/builtins/echo.c \
-					srcs/builtins/export.c \
 					srcs/builtins/env.c \
 					srcs/builtins/exit.c \
+					srcs/builtins/export.c \
+					srcs/builtins/heredoc_builtin.c \
 					srcs/builtins/history.c \
 					srcs/builtins/pwd.c \
 					srcs/builtins/unset.c \
-					srcs/builtins/heredoc_builtin.c \
 					srcs/parsing/checks.c \
-					srcs/parsing/options.c \
 					srcs/parsing/lexer.c \
-					srcs/parsing/tokens.c \
+					srcs/parsing/options.c \
+					srcs/parsing/parameter_expansion.c \
 					srcs/parsing/parser.c \
 					srcs/parsing/quotes.c \
 					srcs/parsing/redirections.c \
-					srcs/parsing/parameter_expansion.c \
+					srcs/parsing/tokens.c \
 					srcs/parsing/word.c \
 					srcs/variables/env.c \
 					srcs/variables/ft_getenv.c \

@@ -1,29 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   options.c                                          :+:      :+:    :+:   */
+/*   find_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/28 22:14:52 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 21:28:25 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/03/01 21:04:47 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/03/01 21:08:12 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "cmd.h"
+#include "libft.h"
+#include <sys/stat.h>
 
-void	get_options(t_cmd *cmd)
+void	find_file_in_path(t_cmd *cmd, char **path)
 {
-	size_t	i;
+	int			i;
+	char		*temp;
+	char		*dst;
+	struct stat	buffer;
 
-	cmd->nb_options = 0;
-	i = 1;
-	while (i < cmd->nb_args)
+	if (!path || !(*path) || !cmd || !cmd->exec_name
+		|| ft_strchr(cmd->exec_name, '/'))
+		return ;
+	temp = ft_strjoin("/", cmd->exec_name);
+	i = 0;
+	while (path[i] && temp)
 	{
-		if (cmd->args[i] && cmd->args[i][0] != '-')
+		dst = ft_strjoin(path[i], temp);
+		if ((stat(dst, &buffer) == 0))
+		{
+			cmd->exec_name = dst;
 			break ;
-		cmd->nb_options++;
+		}
+		free(dst);
 		i++;
 	}
+	free(temp);
 }

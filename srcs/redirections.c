@@ -1,73 +1,70 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_redirections.c                             :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/01 11:18:29 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 20:51:42 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/03/01 20:18:37 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/03/01 21:00:52 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd.h"
-#include "shell.h"
 #include "redirections.h"
-#include "builtin.h"
+#include "heredoc.h"
+#include "cmd.h"
+#include "error.h"
+#include "shell.h"
 #include <fcntl.h>
+#include <string.h>
 
 static int	redirect_out(char *file, int append)
 {
+	int		fd;
+
 	if (append)
-		g_sh.std_out = open(file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		fd = open(file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	else
-		g_sh.std_out = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (g_sh.std_out < 0)
+		fd = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (fd < 0)
 	{
 		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(file);
 		return (0);
 	}
+	if (dup2(fd, STDOUT_FILENO) < 0)
+	{
+		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror("dup2");
+		return (0);
+	}
+	close(fd);
 	return (1);
 }
 
 static int	redirect_in(char *file)
 {
-	g_sh.std_in = open(file, O_RDONLY, 0644);
-	if (g_sh.std_in < 0)
+	int		fd;
+
+	fd = open(file, O_RDONLY, 0644);
+	if (fd < 0)
 	{
 		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(file);
 		return (0);
 	}
-	return (1);
-}
-
-void	close_builtin_redirections(t_cmd *cmd, size_t count)
-{
-	size_t	i;
-	t_redir	*r;
-
-	if (!cmd || !cmd->redir)
-		return ;
-	i = 0;
-	r = cmd->redir;
-	while (r && i < count)
+	if (dup2(fd, STDIN_FILENO) < 0)
 	{
-		if (r->mode == IO_FILE_IN)
-			close(g_sh.std_in);
-		else if (r->mode == IO_FILE_OUT || r->mode == IO_FILE_APPEND)
-			close(g_sh.std_out);
-		else if (r->mode == IO_HEREDOC)
-			close(cmd->fd_heredoc[0]);
-		r = r->next;
-		i++;
+		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror("dup2");
+		return (0);
 	}
-	g_sh.std_in = STDIN_FILENO;
-	g_sh.std_out = STDOUT_FILENO;
-	g_sh.std_err = STDERR_FILENO;
+	close(fd);
+	return (1);
 }
 
 static int	start_heredoc(t_cmd *cmd, char *delim)
@@ -81,23 +78,27 @@ static int	start_heredoc(t_cmd *cmd, char *delim)
 		delim[ft_strlen(delim) - 1] = '\0';
 	}
 	cmd->heredoc = 1;
-	if (!heredoc_builtin(cmd, delim + quoted))
+	if (!heredoc(cmd, delim + quoted))
 		return (0);
 	close(cmd->fd_heredoc[1]);
-	g_sh.std_in = cmd->fd_heredoc[0];
+	if (dup2(cmd->fd_heredoc[0], STDIN_FILENO) < 0)
+	{
+		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
 	return (1);
 }
 
-size_t	do_builtin_redirections(t_cmd *cmd)
+int	do_redirections(t_cmd *cmd)
 {
 	int		done;
-	size_t	count;
 	t_redir	*r;
 
 	done = 1;
-	count = -1;
 	r = cmd->redir;
-	while (r && done && count++)
+	while (r && done)
 	{
 		if (r->mode == IO_FILE_IN)
 			done = redirect_in(r->file);
@@ -107,9 +108,7 @@ size_t	do_builtin_redirections(t_cmd *cmd)
 			done = redirect_out(r->file, 1);
 		else if (r->mode == IO_HEREDOC)
 			done = start_heredoc(cmd, r->file);
-		if (!done)
-			return (-1);
 		r = r->next;
 	}
-	return (count);
+	return (done);
 }

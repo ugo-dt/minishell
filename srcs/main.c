@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 14:14:45 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 18:16:17 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	main(int ac, const char **av, const char **envp)
 		g_sh.prompt = get_prompt();
 		g_sh.line = readline(g_sh.prompt);
 		add_command_to_history();
-		run_command();
+		start_to_parse_command();
 		if (g_sh.line)
 			free(g_sh.line);
 		g_sh.line = NULL;

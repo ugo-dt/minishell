@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:11:15 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:51:31 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 21:13:03 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int				run_exit(t_cmd *cmd);
 int				show_error(char *name, char *err, char option, char *usage);
 int				unrecognized_option(char *name, char *option, char *usage);
 int				find_builtin(t_cmd *cmd);
+int				run_builtin(t_cmd *cmd, int builtin);
 int				try_builtin_first(t_cmd *cmd);
 
 size_t			do_builtin_redirections(t_cmd *cmd);
