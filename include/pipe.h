@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 18:14:17 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 19:47:51 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 21:47:15 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_pipe
 }t_pipe;
 
 void	dup2_error(void);
-void	init_pipes(t_pipe *p, t_cmd *cmd);
+void	init_pipes(t_pipe *p, size_t nb_pipes);
 void	free_pipe(int **arr, size_t max);
 void	close_pipes(t_pipe *p);
 

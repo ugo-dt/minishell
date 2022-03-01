@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 12:32:03 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 21:25:15 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 22:04:11 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,6 @@
 #include "shell.h"
 
 static int	parse_tokens_to_arguments(t_cmd *cmd, t_token **list);
-
-/*
-void	print_token_details(t_token *t)
-{
-	printf("DEBUG: ---TOKEN---\n");
-	printf("DEBUG: type: ");
-	if (t->word)
-		printf("WORD: |");
-	else
-		printf("Operator: ");
-	if (t->type == TOKEN_NEWLINE)
-		printf("'newline'\n");
-	if (t->type == TOKEN_GREAT)
-		printf(">\n");
-	if (t->type == TOKEN_LESS)
-		printf("<\n");
-	if (t->type == TOKEN_GREATGREAT)
-		printf(">>\n");
-	if (t->type == TOKEN_LESSLESS)
-		printf("<<\n");
-	if (t->type == TOKEN_PIPE)
-		printf("|\n");
-	if (t->word)
-	{
-		for (size_t j=0;j<t->wsize;j++)
-			printf("%c", t->word[j]);
-		printf("|\n");
-	}
-	printf("DEBUG: --- END ---\n");
-}
-*/
 
 static int	get_arguments(t_cmd *cmd, t_token **list)
 {

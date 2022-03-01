@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 20:19:24 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 23:02:35 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	start_new_process(t_cmd *cmd)
 		if (WTERMSIG(status) == SIGINT)
 			ft_putchar('\n');
 		if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+			ft_putendl_fd("Quit (core dumped)", STDOUT_FILENO);
 	}
 }
 

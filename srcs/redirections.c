@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 21:00:52 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 23:11:12 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	do_redirections(t_cmd *cmd)
 		else if (r->mode == IO_FILE_APPEND)
 			done = redirect_out(r->file, 1);
 		else if (r->mode == IO_HEREDOC)
-			done = start_heredoc(cmd, r->file);
+			start_heredoc(cmd, r->file);
 		r = r->next;
 	}
 	return (done);

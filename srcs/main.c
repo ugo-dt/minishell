@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 18:16:17 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 22:04:07 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int ac, const char **av, const char **envp)
 		ft_dprintf(g_sh.std_err, "Aborting\n.");
 		return (EXIT_FAILURE);
 	}
-	while (isatty(STDIN_FILENO) && g_sh.status & FLAG_LOOP)
+	while (isatty(g_sh.std_in) && g_sh.status & FLAG_LOOP)
 	{
 		g_sh.prompt = get_prompt();
 		g_sh.line = readline(g_sh.prompt);

@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 14:22:44 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 22:29:20 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	init_signals(void)
 	int				rc;
 	struct termios	termios_new;
 
-	rc = tcgetattr(STDIN_FILENO, &g_sh.termios_save);
+	rc = tcgetattr(g_sh.std_in, &g_sh.termios_save);
 	if (rc)
 		exit(set_error_message("tcgetattr", strerror(errno), EXIT_FAILURE));
 	termios_new = g_sh.termios_save;

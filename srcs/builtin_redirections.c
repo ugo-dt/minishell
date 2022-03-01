@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:18:29 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 20:51:42 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 23:11:59 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static int	redirect_out(char *file, int append)
 		g_sh.std_out = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (g_sh.std_out < 0)
 	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(SHELL_NAME, g_sh.std_err);
+		ft_putstr_fd(": ", g_sh.std_err);
 		perror(file);
 		return (0);
 	}
@@ -37,8 +37,8 @@ static int	redirect_in(char *file)
 	g_sh.std_in = open(file, O_RDONLY, 0644);
 	if (g_sh.std_in < 0)
 	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(SHELL_NAME, g_sh.std_err);
+		ft_putstr_fd(": ", g_sh.std_err);
 		perror(file);
 		return (0);
 	}

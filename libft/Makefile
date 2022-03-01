@@ -6,7 +6,7 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/16 12:23:21 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/02/26 10:08:07 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/03/01 22:22:42 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,7 @@ SRCS		=	srcs/array/2d_array.c \
 				srcs/string/ft_strsplit.c \
 				srcs/string/ft_strtrim.c \
 				srcs/string/ft_substr.c \
-				srcs/write/ft_puchar.c \
+				srcs/write/ft_putchar.c \
 				srcs/write/ft_putchar_fd.c \
 				srcs/write/ft_putendl.c \
 				srcs/write/ft_putendl_fd.c \
