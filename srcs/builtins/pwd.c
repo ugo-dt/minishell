@@ -20,16 +20,17 @@ int	pwd(t_cmd *cmd)
 	if (cmd->nb_options && cmd->args && cmd->args[1])
 	{
 		if (cmd->args[1][1] == '-')
-			return (unrecognized_option(BUILTIN_PWD, cmd->args[1], NULL));
+			return (unrecognized_option(BUILTIN_PWD_NAME, cmd->args[1], NULL));
 		else
-			return (show_error(BUILTIN_PWD, BAD_OPTION, cmd->args[1][1], NULL));
+			return (show_error(BUILTIN_PWD_NAME,
+					BAD_OPTION, cmd->args[1][1], NULL));
 	}
 	if (cmd->args && cmd->args[1])
-		return (show_error(BUILTIN_PWD, TOO_MANY_ARGS, 0, NULL));
+		return (show_error(BUILTIN_PWD_NAME, TOO_MANY_ARGS, 0, NULL));
 	wd = getcwd(NULL, 0);
 	if (!wd)
-		return (set_errno(BUILTIN_PWD, NULL, errno, EXIT_FAILURE));
-	ft_putendl(wd);
+		return (set_errno(BUILTIN_PWD_NAME, NULL, errno, EXIT_FAILURE));
+	ft_putendl_fd(wd, g_sh.std_out);
 	free(wd);
 	return (EXIT_SUCCESS);
 }

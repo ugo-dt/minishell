@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 16:41:11 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:58:01 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static void	print_arguments(t_cmd *cmd)
 	i = 1 + cmd->nb_options;
 	while (i < cmd->nb_args)
 	{
-		ft_putstr(cmd->args[i++]);
+		ft_putstr_fd(cmd->args[i++], g_sh.std_out);
 		if (cmd->args[i])
-			ft_putchar(' ');
+			ft_putchar_fd(' ', g_sh.std_out);
 	}
 }
 
@@ -59,9 +59,9 @@ static char	print_options(t_cmd *cmd)
 		else
 		{
 			n = 0;
-			ft_printf("%s", cmd->args[i]);
+			ft_dprintf(g_sh.std_out, "%s", cmd->args[i]);
 			if (cmd->args[i + 1])
-				ft_putchar(' ');
+				ft_putchar_fd(' ', g_sh.std_out);
 		}
 		i++;
 	}
@@ -76,6 +76,6 @@ int	echo(t_cmd *cmd)
 	if (cmd->args[1])
 		print_arguments(cmd);
 	if (c)
-		ft_putchar(c);
+		ft_putchar_fd(c, g_sh.std_out);
 	return (EXIT_SUCCESS);
 }

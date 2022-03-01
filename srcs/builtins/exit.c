@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 21:35:30 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:59:32 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,16 @@ static int	get_exit_code(t_cmd *cmd)
 	{
 		if (i > 1)
 		{
-			ft_dprintf(STDERR_FILENO, "%s: %s: %s\n",
-				SHELL_NAME, BUILTIN_EXIT, TOO_MANY_ARGS);
+			ft_dprintf(g_sh.std_err, "%s: %s: %s\n",
+				SHELL_NAME, BUILTIN_EXIT_NAME, TOO_MANY_ARGS);
 			return (EXIT_FAILURE);
 		}
 		if (digits_only(cmd->args[i]))
 			g_sh.exit_value = ft_atoi(cmd->args[i]);
 		else
 		{
-			ft_dprintf(STDERR_FILENO, "%s: %s: %s: %s\n",
-				SHELL_NAME, BUILTIN_EXIT, cmd->args[i], EXIT_NUM_ARG_REQUIRED);
+			ft_dprintf(g_sh.std_err, "%s: %s: %s: %s\n", SHELL_NAME,
+				BUILTIN_EXIT_NAME, cmd->args[i], EXIT_NUM_ARG_REQUIRED);
 			g_sh.status &= ~FLAG_LOOP;
 			return (EXIT_OUT_OF_RANGE);
 		}

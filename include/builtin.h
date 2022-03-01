@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:11:15 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 20:31:13 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 15:51:31 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,23 @@
 # include <stdlib.h>
 
 /* Builtin commands */
-# define BUILTIN_ECHO		"echo"
-# define BUILTIN_CD			"cd"
-# define BUILTIN_PWD		"pwd"
-# define BUILTIN_EXPORT		"export"
-# define BUILTIN_UNSET		"unset"
-# define BUILTIN_ENV		"env"
-# define BUILTIN_EXIT		"exit"
-# define BUILTIN_HISTORY	"history"
+# define BUILTIN_ECHO_NAME		"echo"
+# define BUILTIN_CD_NAME		"cd"
+# define BUILTIN_PWD_NAME		"pwd"
+# define BUILTIN_EXPORT_NAME	"export"
+# define BUILTIN_UNSET_NAME		"unset"
+# define BUILTIN_ENV_NAME		"env"
+# define BUILTIN_EXIT_NAME		"exit"
+# define BUILTIN_HISTORY_NAME	"history"
+
+# define BUILTIN_ECHO			1
+# define BUILTIN_CD				2
+# define BUILTIN_PWD			3
+# define BUILTIN_EXPORT			4
+# define BUILTIN_UNSET			5
+# define BUILTIN_ENV			6
+# define BUILTIN_HISTORY		7
+# define BUILTIN_EXIT			8
 
 /* cd builtin
  *
@@ -82,6 +91,11 @@ int				show_error(char *name, char *err, char option, char *usage);
 int				unrecognized_option(char *name, char *option, char *usage);
 int				find_builtin(t_cmd *cmd);
 int				try_builtin_first(t_cmd *cmd);
+
+size_t			do_builtin_redirections(t_cmd *cmd);
+void			close_builtin_redirections(t_cmd *cmd, size_t count);
+
+int				heredoc_builtin(t_cmd *cmd, char *delim);
 
 /* BUILTIN */
 #endif

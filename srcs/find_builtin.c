@@ -6,76 +6,103 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:43:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 21:32:49 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 14:25:10 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "shell.h"
 
 int	show_error(char *name, char *error, char option, char *usage)
 {
-	ft_dprintf(STDERR_FILENO, "%s", SHELL_NAME);
+	ft_dprintf(g_sh.std_err, "%s", SHELL_NAME);
 	if (name && error)
 	{
 		if (option)
-			ft_dprintf(STDERR_FILENO, ": %s: %s: -%c\n", name, error, option);
+			ft_dprintf(g_sh.std_err, ": %s: %s: -%c\n", name, error, option);
 		else
-			ft_dprintf(STDERR_FILENO, ": %s: %s\n", name, error);
+			ft_dprintf(g_sh.std_err, ": %s: %s\n", name, error);
 	}
 	if (usage)
-		ft_dprintf(STDERR_FILENO, "%s\n", usage);
+		ft_dprintf(g_sh.std_err, "%s\n", usage);
 	return (EXIT_FAILURE);
 }
 
 int	unrecognized_option(char *name, char *option, char *usage)
 {
-	ft_dprintf(STDERR_FILENO, "%s", SHELL_NAME);
+	ft_dprintf(g_sh.std_err, "%s", SHELL_NAME);
 	if (name && option)
 		ft_dprintf(
-			STDERR_FILENO, ": %s: unrecognized option '%s'\n", name, option);
+			g_sh.std_err, ": %s: unrecognized option '%s'\n", name, option);
 	if (usage)
-		ft_dprintf(STDERR_FILENO, "%s\n", usage);
+		ft_dprintf(g_sh.std_err, "%s\n", usage);
 	return (EXIT_FAILURE);
 }
 
 int	find_builtin(t_cmd *cmd)
 {
-	int		done;
-
 	if (!cmd || !cmd->exec_name)
 		return (EXIT_SUCCESS);
-	done = -1;
-	if (ft_strcmp(cmd->exec_name, BUILTIN_ECHO) == 0)
-		done = echo(cmd);
-	else if (ft_strcmp(cmd->exec_name, BUILTIN_CD) == 0)
-		done = cd(cmd);
-	else if (ft_strcmp(cmd->exec_name, BUILTIN_PWD) == 0)
-		done = pwd(cmd);
-	else if (ft_strcmp(cmd->exec_name, BUILTIN_EXPORT) == 0)
-		done = export(cmd);
-	else if (ft_strcmp(cmd->exec_name, BUILTIN_UNSET) == 0)
-		done = unset(cmd);
-	else if (ft_strcmp(cmd->exec_name, BUILTIN_ENV) == 0)
-		done = env(cmd);
-	else if (ft_strcmp(cmd->exec_name, BUILTIN_HISTORY) == 0)
-		done = print_history();
-	else if (ft_strcmp(cmd->exec_name, BUILTIN_EXIT) == 0)
-		done = run_exit(cmd);
-	return (done);
+	if (ft_strcmp(cmd->exec_name, BUILTIN_ECHO_NAME) == 0)
+		return (BUILTIN_ECHO);
+	else if (ft_strcmp(cmd->exec_name, BUILTIN_CD_NAME) == 0)
+		return (BUILTIN_CD);
+	else if (ft_strcmp(cmd->exec_name, BUILTIN_PWD_NAME) == 0)
+		return (BUILTIN_PWD);
+	else if (ft_strcmp(cmd->exec_name, BUILTIN_EXPORT_NAME) == 0)
+		return (BUILTIN_EXPORT);
+	else if (ft_strcmp(cmd->exec_name, BUILTIN_UNSET_NAME) == 0)
+		return (BUILTIN_UNSET);
+	else if (ft_strcmp(cmd->exec_name, BUILTIN_ENV_NAME) == 0)
+		return (BUILTIN_ENV);
+	else if (ft_strcmp(cmd->exec_name, BUILTIN_HISTORY_NAME) == 0)
+		return (BUILTIN_HISTORY);
+	else if (ft_strcmp(cmd->exec_name, BUILTIN_EXIT_NAME) == 0)
+		return (BUILTIN_EXIT);
+	return (EXIT_NOT_FOUND);
+}
+
+static int	run_builtin(t_cmd *cmd, int builtin)
+{
+	if (builtin == BUILTIN_ECHO)
+		return (echo(cmd));
+	if (builtin == BUILTIN_CD)
+		return (cd(cmd));
+	if (builtin == BUILTIN_PWD)
+		return (pwd(cmd));
+	if (builtin == BUILTIN_EXPORT)
+		return (export(cmd));
+	if (builtin == BUILTIN_UNSET)
+		return (unset(cmd));
+	if (builtin == BUILTIN_ENV)
+		return (env(cmd));
+	if (builtin == BUILTIN_HISTORY)
+		return (print_history());
+	if (builtin == BUILTIN_EXIT)
+		return (run_exit(cmd));
+	return (EXIT_FAILURE);
 }
 
 int	try_builtin_first(t_cmd *cmd)
 {
-	int	done;
+	int		builtin;
+	size_t	redir;
 
 	if (nb_pipes(cmd) < 1)
 	{
-		done = find_builtin(cmd);
-		if (done != -1)
+		builtin = find_builtin(cmd);
+		if (builtin == EXIT_NOT_FOUND)
+			return (0);
+		redir = 0;
+		if (nb_redir(cmd) > 0)
 		{
-			g_sh.exit_value = (t_uchar)done;
-			return (1);
+			redir = do_builtin_redirections(cmd);
+			if (redir < 0)
+				return (2);
 		}
+		g_sh.exit_value = (t_uchar)run_builtin(cmd, builtin);
+		close_builtin_redirections(cmd, redir);
+		return (1);
 	}
 	return (0);
 }

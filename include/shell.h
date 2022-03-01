@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:16:17 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/27 21:56:40 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:17:14 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,21 @@ typedef unsigned long long		t_ull;
 # define FLAG_HISTORY			0x00000004
 
 /* Exit codes */
-# define EXIT_MISUSE			2
-# define EXIT_CANT_EXECUTE		126
 # define EXIT_NOT_FOUND			127
-# define EXIT_NOT_RECOVERABLE	131
 # define EXIT_OUT_OF_RANGE		255
 
 typedef struct g_shell
 {
 	FLAG			status;
 	t_envl			*envp;
-	char			**path;
 	char			*line;
 	char			*prompt;
 	t_uchar			exit_value;
 	t_uint			error_message;
 	t_history		history;
+	int				std_out;
+	int				std_in;
+	int				std_err;
 	struct termios	termios_save;
 }t_shell;
 

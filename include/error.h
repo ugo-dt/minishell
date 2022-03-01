@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 17:25:01 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 13:02:47 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:10:16 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 # define EXPORT_USAGE				"usage: export [name[=value]]"
 # define UNSET_USAGE				"usage: unset [name]"
 # define INVALID_IDENTIFIER			"not a valid indentifier"
-
-# define EXIT_NOT_FOUND				127
 
 int		set_error_message(char *msg, char *info, int ret);
 int		set_errno(char *name, char *info, int errnum, int ret);

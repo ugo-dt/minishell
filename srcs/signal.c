@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 21:33:26 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 14:22:44 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,17 @@
 
 void	sig_execve_handler(int signum)
 {
+	g_sh.exit_value = 128 + signum;
 	if (signum == SIGINT)
 	{
 		ft_putchar('\n');
-		signal(SIGINT, (void *)sig_handler);
 		exit(g_sh.exit_value);
 	}
-	else if (signum == SIGQUIT)
-		g_sh.exit_value = 128 + signum;
 }
 
 void	sig_handler(int signum)
 {
-	g_sh.exit_value = 128 + signum;
+	g_sh.exit_value = EXIT_FAILURE;
 	if (signum == SIGINT)
 	{
 		if (g_sh.status & FLAG_INTERACTVE)
@@ -47,7 +45,7 @@ void	init_signals(void)
 	int				rc;
 	struct termios	termios_new;
 
-	rc = tcgetattr(0, &g_sh.termios_save);
+	rc = tcgetattr(STDIN_FILENO, &g_sh.termios_save);
 	if (rc)
 		exit(set_error_message("tcgetattr", strerror(errno), EXIT_FAILURE));
 	termios_new = g_sh.termios_save;

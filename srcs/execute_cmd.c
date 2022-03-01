@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 22:12:41 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:13:18 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "shell.h"
 #include "builtin.h"
 #include "parser.h"
+#include <sys/wait.h>
 
 static int	should_run_command(void)
 {
@@ -40,8 +41,15 @@ static int	should_run_command(void)
 
 static void	execute_process(t_cmd *cmd)
 {
+	int		status;
+
 	(void)cmd;
 	printf("TODO: new process here\n");
+	signal(SIGQUIT, SIG_DFL);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		exit(EXIT_FAILURE);
+	if (g_sh.exit_value != EXIT_SUCCESS)
+		exit(EXIT_FAILURE);
 	exit(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 11:44:26 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 17:19:58 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:56:02 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	*get_pathname(t_cmd *cmd, char *pwd)
 		oldpwd = ft_getenv("OLDPWD");
 		if (!oldpwd || ft_strlen(oldpwd) < 1)
 		{
-			show_error(BUILTIN_CD, OLDPWD_NOT_SET, 0, NULL);
+			show_error(BUILTIN_CD_NAME, OLDPWD_NOT_SET, 0, NULL);
 			return (NULL);
 		}
 		path = ft_strdup(oldpwd);
@@ -92,8 +92,8 @@ int	cd_path(char *path, char *pwd, char *original)
 	if (done != EXIT_SUCCESS)
 	{
 		if (original)
-			ft_dprintf(STDERR_FILENO, "%s: %s: %s: %s\n",
-				SHELL_NAME, BUILTIN_CD, original, strerror(errno));
+			ft_dprintf(g_sh.std_err, "%s: %s: %s: %s\n",
+				SHELL_NAME, BUILTIN_CD_NAME, original, strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	if (!pwd)
@@ -120,7 +120,7 @@ int	cd(t_cmd *cmd)
 	{
 		home = ft_getenv("HOME");
 		if (!home || ft_strlen(home) < 1)
-			return (show_error(BUILTIN_CD, HOME_NOT_SET, 0, NULL));
+			return (show_error(BUILTIN_CD_NAME, HOME_NOT_SET, 0, NULL));
 		path = ft_strdup(home);
 	}
 	else

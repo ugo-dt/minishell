@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:53:43 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 21:42:56 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:05:13 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,15 @@ int	export(t_cmd *cmd)
 	if (cmd->args && !cmd->args[1])
 		return (no_arguments());
 	if (cmd->nb_options)
-		return (show_error(BUILTIN_EXPORT, BAD_OPTION,
+		return (show_error(BUILTIN_EXPORT_NAME, BAD_OPTION,
 				cmd->args[1][1], EXPORT_USAGE));
 	i = 1;
 	while (i < cmd->nb_args)
 	{
 		if (ft_strchr(cmd->args[i], '?')
 			|| ft_len_to_char(cmd->args[i], '=') < 1)
-			ft_dprintf(STDERR_FILENO, "%s: %s: '%s': %s\n", SHELL_NAME,
-				BUILTIN_UNSET, cmd->args[i], INVALID_IDENTIFIER);
+			ft_dprintf(g_sh.std_err, "%s: %s: '%s': %s\n", SHELL_NAME,
+				BUILTIN_UNSET_NAME, cmd->args[i], INVALID_IDENTIFIER);
 		else if (ft_strchr(cmd->args[i], '='))
 			envl_pushback(&g_sh.envp, parse_env_line_to_envl(cmd->args[i]));
 		i++;

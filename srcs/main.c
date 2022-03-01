@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 13:14:30 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 14:14:45 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,20 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include <fcntl.h>
+#include <stdio.h>
+
 static int	init_shell(const char **envp)
 {
-	(void)envp;
+	g_sh.std_err = STDERR_FILENO;
+	g_sh.std_in = STDIN_FILENO;
+	g_sh.std_out = STDOUT_FILENO;
 	init_signals();
 	init_env(envp);
 	g_sh.line = NULL;
 	g_sh.error_message = 0;
 	g_sh.exit_value = 0;
+	g_sh.prompt = NULL;
 	g_sh.status = FLAG_INTERACTVE | FLAG_LOOP;
 	return (1);
 }
@@ -47,7 +53,7 @@ int	main(int ac, const char **av, const char **envp)
 	(void)av;
 	if (!init_shell(envp))
 	{
-		ft_dprintf(STDERR_FILENO, "Aborting\n.");
+		ft_dprintf(g_sh.std_err, "Aborting\n.");
 		return (EXIT_FAILURE);
 	}
 	while (isatty(STDIN_FILENO) && g_sh.status & FLAG_LOOP)

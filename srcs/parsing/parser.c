@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 12:32:03 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 22:20:52 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/01 12:29:33 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int	parse_command(t_cmd *cmd, const char *line)
 			get_options(cmd);
 		}
 	}
+/*
 #ifdef DEBUG
 	t_redir	*r;
 	t_cmd	*c;
@@ -145,6 +146,6 @@ int	parse_command(t_cmd *cmd, const char *line)
 		ft_printf("DEBUG: --------   END   --------\n");
 		c = c->next;
 	}
-#endif
+#endif*/
 	return (1);
 }
