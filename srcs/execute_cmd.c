@@ -6,14 +6,16 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 22:57:42 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:52:21 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
 #include "env.h"
+#include "heredoc.h"
 #include "libft.h"
 #include "error.h"
+#include "errno.h"
 #include "shell.h"
 #include "heredoc.h"
 #include "pipe.h"
@@ -24,70 +26,54 @@ static void	redirect_process(t_cmd *cmd, t_pipe *p, size_t i)
 	{
 		close(p->pipe[i][0]);
 		if (dup2(p->pipe[i][1], STDOUT_FILENO) < 0)
-		{
-			ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-			ft_putstr_fd(": ", STDERR_FILENO);
-			perror("dup21");
-			exit(EXIT_FAILURE);
-		}
+			exit(set_errno("could not redirect output",
+					"dup2 error", errno, EXIT_FAILURE));
 		close(p->pipe[i][1]);
 	}
 	if (i > 0)
 	{
 		close(p->pipe[i - 1][1]);
 		if (dup2(p->pipe[i - 1][0], STDIN_FILENO) < 0)
-		{
-			ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-			ft_putstr_fd(": ", STDERR_FILENO);
-			perror("dup22");
-			exit(EXIT_FAILURE);
-		}
+			exit(set_errno("could not redirect input",
+					"dup2 error", errno, EXIT_FAILURE));
 		close(p->pipe[i - 1][0]);
 	}
 	close_pipes(p);
 }
 
-static int	new_process(t_cmd *cmd, t_pipe *p, size_t i, char **path)
+static int	new_process(t_cmd *cmd, t_pipe *p, size_t i)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
+		return (set_errno("could not create new process: ",
+				"fork error", errno, -1));
 	if (pid == 0)
 	{
 		redirect_process(cmd, p, i);
-		if (!do_redirections(cmd))
-			exit(EXIT_FAILURE);
-		find_file_in_path(cmd, path);
-		execve(cmd->exec_name, cmd->args, path);
+		if (!do_redirections(cmd, cmd->redir))
+			return (-1);
+		execute_process(cmd);
 	}
 	close(cmd->fd_heredoc[0]);
 	close(cmd->fd_heredoc[1]);
 	return (pid);
 }
 
-void	do_pipes(t_cmd *cmd, char **path, size_t pipes)
+void	do_pipes(t_cmd *cmd, size_t pipes)
 {
 	size_t	i;
-	size_t	j;
 	t_pipe	p;
 
 	init_pipes(&p, pipes);
 	i = 0;
-	j = 0;
-	while (cmd)
+	while (i < p.nb_cmd)
 	{
-		p.pid[j] = new_process(cmd, &p, i, path);
-		if (p.pid[j] < 0)
+		p.pid[i] = new_process(cmd, &p, i);
+		if (p.pid[i] < 0)
 			exit(EXIT_FAILURE);
 		i++;
-		j++;
 		cmd = cmd->next;
 	}
 	close_pipes(&p);
@@ -102,24 +88,24 @@ void	do_pipes(t_cmd *cmd, char **path, size_t pipes)
 
 void	execute_cmd(t_cmd *cmd)
 {
+	t_cmd	*c;
 	size_t	pipes;
-	char	**path;
 
-	path = ft_split(ft_getenv("PATH"), ':');
+	signal(SIGQUIT, SIG_DFL);
 	pipes = nb_pipes(cmd);
+	c = cmd;
+	while (c)
+	{
+		do_heredocs(c);
+		c = c->next;
+	}
 	if (pipes < 1)
 	{
-		if (!do_redirections(cmd))
+		if (!do_redirections(cmd, cmd->redir))
 			exit(EXIT_FAILURE);
-		find_file_in_path(cmd, path);
-		execve(cmd->exec_name, cmd->args, path);
-		set_error_message(cmd->exec_name, CMD_NOT_FOUND, 0);
-		free(path);
-		clear_cmd(cmd);
-		exit(EXIT_NOT_FOUND);
+		execute_process(cmd);
 	}
-	do_pipes(cmd, path, pipes);
-	free(path);
+	do_pipes(cmd, pipes);
 	clear_cmd(cmd);
 	exit(g_sh.exit_value);
 }

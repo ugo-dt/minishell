@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 11:59:32 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:15:21 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ static int	get_exit_code(t_cmd *cmd)
 
 int	run_exit(t_cmd *cmd)
 {
-	if (nb_pipes(cmd) < 1)
-		ft_putendl("exit");
 	if (!cmd->args)
 	{
 		g_sh.status &= ~FLAG_LOOP;

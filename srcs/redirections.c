@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 23:11:12 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:50:20 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,9 @@ static int	redirect_out(char *file, int append)
 	else
 		fd = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror(file);
-		return (0);
-	}
+		return (set_errno(file, NULL, errno, 0));
 	if (dup2(fd, STDOUT_FILENO) < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror("dup2");
-		return (0);
-	}
+		return (set_errno("redirection error", "dup2", errno, 0));
 	close(fd);
 	return (1);
 }
@@ -50,19 +40,9 @@ static int	redirect_in(char *file)
 
 	fd = open(file, O_RDONLY, 0644);
 	if (fd < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror(file);
-		return (0);
-	}
+		return (set_errno(file, NULL, errno, 0));
 	if (dup2(fd, STDIN_FILENO) < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror("dup2");
-		return (0);
-	}
+		return (set_errno("redirection error", "dup2", errno, 0));
 	close(fd);
 	return (1);
 }
@@ -78,26 +58,32 @@ static int	start_heredoc(t_cmd *cmd, char *delim)
 		delim[ft_strlen(delim) - 1] = '\0';
 	}
 	cmd->heredoc = 1;
-	if (!heredoc(cmd, delim + quoted))
-		return (0);
-	close(cmd->fd_heredoc[1]);
-	if (dup2(cmd->fd_heredoc[0], STDIN_FILENO) < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror("dup2");
-		exit(EXIT_FAILURE);
-	}
-	return (1);
+	return (heredoc(cmd, delim + quoted));
 }
 
-int	do_redirections(t_cmd *cmd)
+int	do_heredocs(t_cmd *cmd)
 {
 	int		done;
 	t_redir	*r;
 
 	done = 1;
 	r = cmd->redir;
+	while (r && done)
+	{
+		if (r->mode == IO_HEREDOC)
+			done = start_heredoc(cmd, r->file);
+		if (!done)
+			return (0);
+		r = r->next;
+	}
+	return (done);
+}
+
+int	do_redirections(t_cmd *cmd, t_redir *r)
+{
+	int		done;
+
+	done = 1;
 	while (r && done)
 	{
 		if (r->mode == IO_FILE_IN)
@@ -107,7 +93,13 @@ int	do_redirections(t_cmd *cmd)
 		else if (r->mode == IO_FILE_APPEND)
 			done = redirect_out(r->file, 1);
 		else if (r->mode == IO_HEREDOC)
-			start_heredoc(cmd, r->file);
+		{
+			close(cmd->fd_heredoc[1]);
+			if (dup2(cmd->fd_heredoc[0], STDIN_FILENO) < 0)
+				exit(set_errno("dup2", NULL, errno, EXIT_FAILURE));
+		}	
+		if (!done)
+			return (0);
 		r = r->next;
 	}
 	return (done);

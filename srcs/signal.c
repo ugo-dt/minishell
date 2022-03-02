@@ -6,11 +6,12 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 22:29:20 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:11:01 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sig.h"
+#include "shell.h"
 #include "termios.h"
 #include "error.h"
 #include <errno.h>
@@ -20,7 +21,7 @@ void	sig_execve_handler(int signum)
 	g_sh.exit_value = 128 + signum;
 	if (signum == SIGINT)
 	{
-		ft_putchar('\n');
+		ft_putchar_fd('\n', g_sh.std_out);
 		exit(g_sh.exit_value);
 	}
 }
@@ -32,7 +33,7 @@ void	sig_handler(int signum)
 	{
 		if (g_sh.status & FLAG_INTERACTVE)
 		{
-			ft_putchar('\n');
+			ft_putchar_fd('\n', g_sh.std_out);
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();

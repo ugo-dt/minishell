@@ -6,11 +6,12 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:44:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 15:51:43 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:48:27 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
+#include "heredoc.h"
 #include "error.h"
 #include "redirections.h"
 #include "shell.h"
@@ -43,10 +44,7 @@ static int	do_heredoc(t_cmd *cmd, char *delim)
 			break ;
 		line = get_line(line, delim);
 		if (!line)
-		{
-			ft_dprintf(g_sh.std_err, "%s: unexpected error\n", SHELL_NAME);
-			exit(EXIT_FAILURE);
-		}
+			exit(set_errno("heredoc", "error", ENOMEM, EXIT_FAILURE));
 		if (ft_strcmp(delim, line) == 0
 			&& ft_strlen(delim) == ft_strlen(line))
 			break ;
@@ -58,22 +56,17 @@ static int	do_heredoc(t_cmd *cmd, char *delim)
 	exit(EXIT_SUCCESS);
 }
 
-int	heredoc_builtin(t_cmd *cmd, char *delim)
+static int	heredoc_builtin(t_cmd *cmd, char *delim)
 {
 	pid_t	pid;
 	int		status;
 
 	if (pipe(cmd->fd_heredoc) < 0)
-		return (set_errno("heredoc", "pipe", errno, 0));
+		return (set_errno("heredoc", "pipe error", errno, 0));
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, g_sh.std_err);
-		ft_putstr_fd(": ", g_sh.std_err);
-		perror("heredoc");
-		return (0);
-	}
+		return (set_errno("heredoc", "fork error", errno, 0));
 	if (pid == 0)
 		do_heredoc(cmd, delim);
 	waitpid(pid, &status, 0);
@@ -85,4 +78,36 @@ int	heredoc_builtin(t_cmd *cmd, char *delim)
 		return (0);
 	signal(SIGINT, sig_handler);
 	return (1);
+}
+
+static int	start_heredoc(t_cmd *cmd, char *delim)
+{
+	int		quoted;
+
+	quoted = 0;
+	if (delim[quoted] == '\'' || delim[quoted] == '\"')
+	{
+		quoted = 1;
+		delim[ft_strlen(delim) - 1] = '\0';
+	}
+	cmd->heredoc = 1;
+	return (heredoc_builtin(cmd, delim + quoted));
+}
+
+int	do_heredocs_builtin(t_cmd *cmd)
+{
+	int		done;
+	t_redir	*r;
+
+	done = 1;
+	r = cmd->redir;
+	while (r && done)
+	{
+		if (r->mode == IO_HEREDOC)
+			done = start_heredoc(cmd, r->file);
+		if (!done)
+			return (0);
+		r = r->next;
+	}
+	return (done);
 }

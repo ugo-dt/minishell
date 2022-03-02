@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _ft_printf.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 12:01:49 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/22 10:46:52 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 13:25:37 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ ssize_t	ft_putaddr_len(size_t nb, int fd);
 ssize_t	ft_putulong_len(size_t nb, int fd);
 
 ssize_t	ft_putlong_len(long nb, int fd);
-
-int		ft_dprintf_internal(int fd, const char *f, va_list *ap);
 
 int		ft_dprintf(int fd, const char *format, ...);
 int		ft_printf(const char *format, ...);

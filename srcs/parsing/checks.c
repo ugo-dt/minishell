@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:17:50 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 21:28:17 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 13:16:12 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 
 int	unexpected_token(unsigned int t)
 {
-	printf("%s: syntax error near unexpected token", SHELL_NAME);
+	ft_printf("%s: syntax error near unexpected token", SHELL_NAME);
 	if (t == TOKEN_NEWLINE)
-		printf(": 'newline'");
+		ft_printf(": 'newline'");
 	else if (t == TOKEN_GREAT || t == TOKEN_GREATGREAT)
-		printf(": '>'");
+		ft_printf(": '>'");
 	else if (t == TOKEN_LESS || t == TOKEN_LESSLESS)
-		printf(": '<'");
+		ft_printf(": '<'");
 	else if (t == TOKEN_PIPE)
-		printf(": '|'");
-	printf("\n");
+		ft_printf(": '|'");
+	ft_printf("\n");
 	return (1);
 }
 /*

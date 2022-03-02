@@ -6,11 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:18:29 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 23:11:59 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:48:41 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
+#include "error.h"
+#include "heredoc.h"
+#include "errno.h"
 #include "shell.h"
 #include "redirections.h"
 #include "builtin.h"
@@ -24,10 +27,8 @@ static int	redirect_out(char *file, int append)
 		g_sh.std_out = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (g_sh.std_out < 0)
 	{
-		ft_putstr_fd(SHELL_NAME, g_sh.std_err);
-		ft_putstr_fd(": ", g_sh.std_err);
-		perror(file);
-		return (0);
+		g_sh.std_out = STDOUT_FILENO;
+		return (set_errno(file, NULL, errno, 0));
 	}
 	return (1);
 }
@@ -37,10 +38,8 @@ static int	redirect_in(char *file)
 	g_sh.std_in = open(file, O_RDONLY, 0644);
 	if (g_sh.std_in < 0)
 	{
-		ft_putstr_fd(SHELL_NAME, g_sh.std_err);
-		ft_putstr_fd(": ", g_sh.std_err);
-		perror(file);
-		return (0);
+		g_sh.std_in = STDIN_FILENO;
+		return (set_errno(file, NULL, errno, 0));
 	}
 	return (1);
 }
@@ -70,33 +69,15 @@ void	close_builtin_redirections(t_cmd *cmd, size_t count)
 	g_sh.std_err = STDERR_FILENO;
 }
 
-static int	start_heredoc(t_cmd *cmd, char *delim)
-{
-	int		quoted;
-
-	quoted = 0;
-	if (delim[quoted] == '\'' || delim[quoted] == '\"')
-	{
-		quoted = 1;
-		delim[ft_strlen(delim) - 1] = '\0';
-	}
-	cmd->heredoc = 1;
-	if (!heredoc_builtin(cmd, delim + quoted))
-		return (0);
-	close(cmd->fd_heredoc[1]);
-	g_sh.std_in = cmd->fd_heredoc[0];
-	return (1);
-}
-
-size_t	do_builtin_redirections(t_cmd *cmd)
+size_t	do_builtin_redirections(t_cmd *cmd, t_redir *r)
 {
 	int		done;
 	size_t	count;
-	t_redir	*r;
 
+	if (!do_heredocs_builtin(cmd))
+		return (-1);
 	done = 1;
 	count = -1;
-	r = cmd->redir;
 	while (r && done && count++)
 	{
 		if (r->mode == IO_FILE_IN)
@@ -106,7 +87,10 @@ size_t	do_builtin_redirections(t_cmd *cmd)
 		else if (r->mode == IO_FILE_APPEND)
 			done = redirect_out(r->file, 1);
 		else if (r->mode == IO_HEREDOC)
-			done = start_heredoc(cmd, r->file);
+		{
+			close(cmd->fd_heredoc[1]);
+			g_sh.std_in = cmd->fd_heredoc[0];
+		}
 		if (!done)
 			return (-1);
 		r = r->next;

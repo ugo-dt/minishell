@@ -6,12 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:46:27 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/18 16:59:32 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 13:25:46 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "_ft_printf.h"
+
+int		ft_dprintf_internal(int fd, const char *f, va_list *ap);
 
 /* Write formatted output to the file descriptor fd
  * from the format string FORMAT.

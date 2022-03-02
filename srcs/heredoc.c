@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:55:40 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 21:13:19 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 13:24:01 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,11 @@ int	heredoc(t_cmd *cmd, char *delim)
 	int		status;
 
 	if (pipe(cmd->fd_heredoc) < 0)
-		exit(set_errno("heredoc", "pipe", errno, 0));
+		return (set_errno("heredoc", "pipe", errno, 0));
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
-	{
-		ft_putstr_fd(SHELL_NAME, g_sh.std_err);
-		ft_putstr_fd(": ", g_sh.std_err);
-		perror("heredoc");
-		exit(EXIT_FAILURE);
-	}
+		return (set_errno("heredoc", "fork error", errno, 0));
 	if (pid == 0)
 		do_heredoc(cmd, delim);
 	waitpid(pid, &status, 0);

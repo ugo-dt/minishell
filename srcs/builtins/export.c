@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:53:43 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 13:05:13 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:32:53 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,37 @@ int	no_arguments(void)
 	return (EXIT_SUCCESS);
 }
 
+static int	set_env_from_line(const char *line)
+{
+	size_t	i;
+	char	*name;
+	char	*value;
+
+	i = 0;
+	while (line[i] && line[i] != '=')
+		i++;
+	name = ft_strndup(line, i + 1);
+	if (!name)
+		return (set_errno(BUILTIN_EXPORT_NAME,
+				"could not export new variable", ENOMEM, 0));
+	name[i] = '\0';
+	i++;
+	value = ft_strdup(&line[i]);
+	if (!value)
+	{
+		free(name);
+		return (set_errno(BUILTIN_EXPORT_NAME,
+				"could not export new variable", ENOMEM, 0));
+	}
+	ft_setenv(name, value, 1);
+	free(name);
+	free(value);
+	return (1);
+}
+
 int	export(t_cmd *cmd)
 {
+	int		done;
 	size_t	i;
 
 	if (cmd->args && !cmd->args[1])
@@ -80,14 +109,16 @@ int	export(t_cmd *cmd)
 		return (show_error(BUILTIN_EXPORT_NAME, BAD_OPTION,
 				cmd->args[1][1], EXPORT_USAGE));
 	i = 1;
+	done = 0;
 	while (i < cmd->nb_args)
 	{
 		if (ft_strchr(cmd->args[i], '?')
 			|| ft_len_to_char(cmd->args[i], '=') < 1)
 			ft_dprintf(g_sh.std_err, "%s: %s: '%s': %s\n", SHELL_NAME,
-				BUILTIN_UNSET_NAME, cmd->args[i], INVALID_IDENTIFIER);
+				BUILTIN_EXPORT_NAME, cmd->args[i], INVALID_IDENTIFIER);
 		else if (ft_strchr(cmd->args[i], '='))
-			envl_pushback(&g_sh.envp, parse_env_line_to_envl(cmd->args[i]));
+			if (!set_env_from_line(cmd->args[i]))
+				done = 1;
 		i++;
 	}
 	return (EXIT_SUCCESS);

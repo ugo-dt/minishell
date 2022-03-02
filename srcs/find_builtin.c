@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:43:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 20:09:53 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:16:17 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,12 @@ int	try_builtin_first(t_cmd *cmd)
 		redir = 0;
 		if (nb_redir(cmd) > 0)
 		{
-			redir = do_builtin_redirections(cmd);
+			redir = do_builtin_redirections(cmd, cmd->redir);
 			if (redir < 0)
 				return (2);
 		}
+		if (builtin == BUILTIN_EXIT)
+			ft_putendl("exit");
 		g_sh.exit_value = (t_uchar)run_builtin(cmd, builtin);
 		close_builtin_redirections(cmd, redir);
 		return (1);

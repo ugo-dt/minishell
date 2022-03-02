@@ -6,7 +6,7 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/25 13:39:06 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/03/01 22:04:12 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/03/02 15:21:09 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ SRCS			:=	srcs/main.c \
 					srcs/cmd.c \
 					srcs/error.c \
 					srcs/execute_cmd.c \
+					srcs/execute_process.c \
 					srcs/find_builtin.c \
-					srcs/find_file.c \
 					srcs/heredoc.c \
 					srcs/history.c \
 					srcs/history_struct.c \
@@ -62,7 +62,7 @@ HEADERS			:= 	-I include \
 					$(LIBFT_HEADERS)
 
 CC				:=	clang
-CFLAGS			:=	-Wall -Werror -Wextra $(MACROS) -fsanitize=address
+CFLAGS			:=	-Wall -Werror -Wextra $(MACROS)
 
 ARG				:=	-DARG_MAX=$(shell getconf ARG_MAX)
 ifeq ($(OS), Linux)

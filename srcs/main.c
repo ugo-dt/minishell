@@ -6,21 +6,19 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 22:04:07 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:13:32 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute_cmd.h"
-#include "sig.h"
-#include "error.h"
-#include "minishell.h"
+#include "env.h"
+#include "init.h"
+#include "libft.h"
+#include "parser.h"
 #include "prompt.h"
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "shell.h"
+#include "sig.h"
 
-#include <fcntl.h>
-#include <stdio.h>
+t_shell	g_sh;
 
 static int	init_shell(const char **envp)
 {
@@ -58,8 +56,10 @@ int	main(int ac, const char **av, const char **envp)
 	}
 	while (isatty(g_sh.std_in) && g_sh.status & FLAG_LOOP)
 	{
+		g_sh.status |= FLAG_INTERACTVE;
 		g_sh.prompt = get_prompt();
 		g_sh.line = readline(g_sh.prompt);
+		g_sh.status &= ~FLAG_INTERACTVE;
 		add_command_to_history();
 		start_to_parse_command();
 		if (g_sh.line)

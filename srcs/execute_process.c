@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_file.c                                        :+:      :+:    :+:   */
+/*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 21:04:47 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 22:04:12 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:03:07 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
+#include "builtin.h"
+#include "error.h"
+#include "shell.h"
 #include "libft.h"
 #include <sys/stat.h>
 
-void	find_file_in_path(t_cmd *cmd, char **path)
+static void	find_file_in_path(t_cmd *cmd, char **path)
 {
 	int			i;
 	char		*temp;
@@ -38,4 +41,46 @@ void	find_file_in_path(t_cmd *cmd, char **path)
 		i++;
 	}
 	free(temp);
+}
+
+static char	**envp_to_array(void)
+{
+	char	**envp;
+	t_envl	*envl;
+	size_t	i;
+
+	envl = g_sh.envp;
+	i = 0;
+	while (envl)
+	{
+		i++;
+		envl = envl->next;
+	}
+	envp = ft_xmalloc(sizeof(char *) * (i + 1));
+	envl = g_sh.envp;
+	i = 0;
+	while (envl)
+	{
+		envp[i++] = ft_strjoin_3(envl->name, "=", envl->value);
+		envl = envl->next;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
+void	execute_process(t_cmd *cmd)
+{
+	int		done;
+	char	**path;
+
+	done = find_builtin(cmd);
+	if (done != EXIT_NOT_FOUND)
+		exit(run_builtin(cmd, done));
+	path = ft_split(ft_getenv("PATH"), ':');
+	find_file_in_path(cmd, path);
+	execve(cmd->exec_name, cmd->args, envp_to_array());
+	set_error_message(cmd->args[0], CMD_NOT_FOUND, 0);
+	ft_free_array((void **)path);
+	clear_cmd(cmd);
+	exit(EXIT_NOT_FOUND);
 }

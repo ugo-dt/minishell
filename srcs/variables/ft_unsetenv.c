@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:45:58 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 21:01:48 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 13:44:24 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	ft_unsetenv(const char *name)
 			if (prev)
 				prev->next = lst->next;
 			envl_delone(lst);
-			return (EXIT_SUCCESS);
+			lst = prev->next;
+			continue ;
 		}
 		prev = lst;
 		lst = lst->next;

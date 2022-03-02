@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 17:43:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 12:19:02 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 13:18:19 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int	print_history(void)
 			print_spaces(temp->nb);
 			ft_putnbr_fd(temp->nb, g_sh.std_out);
 			ft_putstr_fd("  ", g_sh.std_out);
-			ft_putstr_fd(temp->line, g_sh.std_out);
-			ft_putchar_fd('\n', g_sh.std_out);
+			ft_putendl_fd(temp->line, g_sh.std_out);
 		}
 		temp = temp->next;
 	}

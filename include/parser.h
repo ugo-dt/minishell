@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 19:59:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 22:15:27 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:10:10 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ static inline char	*quote_type(char q)
 	return ("\"");
 }
 
+void				start_to_parse_command(void);;
 int					parse_command(t_cmd *cmd, const char *line);
 t_cmd				*new_cmd(void);
 
