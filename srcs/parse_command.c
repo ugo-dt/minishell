@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 11:32:05 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 12:08:26 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static void	start_new_process(t_cmd *cmd)
 	{
 		g_sh.exit_value = 128 + WTERMSIG(status);
 		if (WTERMSIG(status) == SIGINT)
-			ft_putendl_fd("^C", g_sh.std_out);
+			ft_putendl_fd("^C", g_sh.std_err);
 		if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit: 3 (core dumped)", g_sh.std_out);
+			ft_putendl_fd("Quit: 3 (core dumped)", g_sh.std_err);
 	}
 }
 

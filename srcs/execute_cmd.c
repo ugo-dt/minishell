@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 11:31:44 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 12:08:44 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ void	do_pipes(t_cmd *cmd, size_t pipes)
 		waitpid(p.pid[i++], &p.exit_status, 0);
 	if (WIFEXITED(p.exit_status))
 		g_sh.exit_value = (t_uchar)WEXITSTATUS(p.exit_status);
+	if (WTERMSIG(p.exit_status) == SIGINT)
+		ft_putendl_fd("^C", g_sh.std_err);
+	if (WTERMSIG(p.exit_status) == SIGQUIT)
+		ft_putendl_fd("Quit: 3 (core dumped)", g_sh.std_err);
 	free_pipe(p.pipe, p.nb_pipes);
 	free(p.pid);
 }
