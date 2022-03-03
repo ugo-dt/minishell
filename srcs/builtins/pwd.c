@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "error.h"
+#include "errors.h"
 
 int	pwd(t_cmd *cmd)
 {

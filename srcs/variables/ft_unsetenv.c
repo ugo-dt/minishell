@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unsetenv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:45:58 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 13:44:24 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:14:13 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
-#include "errno.h"
+#include <errno.h>
 #include "shell.h"
 
 int	ft_unsetenv(const char *name)

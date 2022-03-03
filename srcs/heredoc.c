@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:55:40 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 13:24:01 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:14:13 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "parser.h"
 #include "sig.h"
 #include "libft.h"
-#include "error.h"
-#include "errno.h"
+#include "errors.h"
+#include <errno.h>
+#include <sys/wait.h>
 
 static char	*get_line(char *line, char *delim)
 {

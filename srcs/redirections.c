@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:50:20 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "redirections.h"
 #include "heredoc.h"
 #include "cmd.h"
-#include "error.h"
+#include "errors.h"
 #include "shell.h"
 #include <fcntl.h>
 #include <string.h>

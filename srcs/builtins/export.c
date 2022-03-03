@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:53:43 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:32:53 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "error.h"
+#include "errors.h"
 
 static void	sort_array(t_envl **array, size_t size)
 {

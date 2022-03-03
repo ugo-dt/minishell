@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:16 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 20:16:18 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
-#include "error.h"
+#include "errors.h"
 #include <errno.h>
 
 t_envl	*new_envl(const char *name, const char *val, int export, t_envl *next)

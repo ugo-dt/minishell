@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 12:08:44 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:14:13 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 #include "env.h"
 #include "heredoc.h"
 #include "libft.h"
-#include "error.h"
-#include "errno.h"
+#include "errors.h"
+#include <errno.h>
 #include "shell.h"
 #include "heredoc.h"
 #include "pipe.h"
+#include <signal.h>
+#include <sys/wait.h>
 
 static void	redirect_process(t_cmd *cmd, t_pipe *p, size_t i)
 {
@@ -112,5 +114,6 @@ void	execute_cmd(t_cmd *cmd)
 	}
 	do_pipes(cmd, pipes);
 	clear_cmd(cmd);
+	exit_shell();
 	exit(g_sh.exit_value);
 }

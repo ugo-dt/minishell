@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 11:44:26 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 11:56:02 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "error.h"
+#include "errors.h"
 #include <string.h>
 
 static char	*do_trim(char **comp, char *newpath)

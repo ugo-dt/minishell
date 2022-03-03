@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 17:21:13 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 11:07:52 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#include "errors.h"
 #include "shell.h"
 #include "string.h"
 #include "libft.h"

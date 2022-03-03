@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:05:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 21:32:35 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "init.h"
-#include "error.h"
+#include "errors.h"
 #include "env.h"
 #include <errno.h>
 #include <string.h>
@@ -38,7 +38,7 @@ static void	no_envp(void)
 	envl_pushback(&g_sh.envp, parse_env_line_to_envl("_=minishell"));
 }
 
-static void	increment_shlvl(void)
+static void	adjust_shell_level(void)
 {
 	int		nb;
 	char	*inc;
@@ -67,7 +67,7 @@ void	init_env(const char **envp)
 	{
 		if (ft_strcmp(envp[i], "SHLVL") == 0
 			&& ft_len_to_char(envp[i], '=') == 5)
-			increment_shlvl();
+			adjust_shell_level();
 		else
 			envl_pushback(&g_sh.envp, parse_env_line_to_envl(envp[i]));
 		i++;

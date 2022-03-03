@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 12:32:03 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 11:17:49 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 14:42:51 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "shell.h"
-
-static int	parse_tokens_to_arguments(t_cmd *cmd, t_token **list);
 
 static int	get_arguments(t_cmd *cmd, t_token **list)
 {
@@ -42,14 +40,15 @@ static int	get_arguments(t_cmd *cmd, t_token **list)
 	return (1);
 }
 
-static void	la_norme_tu_connais(t_token	*temp, t_token *prev, t_cmd *c)
+static void	parse_tokens(t_token *temp, t_token *prev, t_cmd *c)
 {
 	while (temp)
 	{
 		if (temp->type == TOKEN_PIPE)
 		{
 			c->next = new_cmd();
-			parse_tokens_to_arguments(c->next, &temp->next);
+			parse_tokens(temp->next, NULL, c->next);
+			get_arguments(c->next, &temp->next);
 			break ;
 		}
 		if ((!prev && temp->type == TOKEN_WORD)
@@ -68,13 +67,6 @@ static void	la_norme_tu_connais(t_token	*temp, t_token *prev, t_cmd *c)
 	}
 }
 
-static int	parse_tokens_to_arguments(t_cmd *cmd, t_token **list)
-{
-	la_norme_tu_connais(*list, NULL, cmd);
-	get_arguments(cmd, list);
-	return (1);
-}
-
 int	parse_command(t_cmd *cmd, const char *line)
 {
 	t_token	*tokenlist;
@@ -86,7 +78,8 @@ int	parse_command(t_cmd *cmd, const char *line)
 		return (0);
 	if (check_token_order(&tokenlist) != 0)
 		return (0);
-	parse_tokens_to_arguments(cmd, &tokenlist);
+	parse_tokens(tokenlist, NULL, cmd);
+	get_arguments(cmd, &tokenlist);
 	clear_tokenlist(&tokenlist);
 	if (cmd->args)
 	{

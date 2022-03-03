@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:11:15 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:44:40 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:26:42 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int				find_builtin(t_cmd *cmd);
 int				run_builtin(t_cmd *cmd, int builtin);
 int				try_builtin_first(t_cmd *cmd);
 
-size_t			do_builtin_redirections(t_cmd *cmd, t_redir *r);
+long			do_builtin_redirections(t_cmd *cmd, t_redir *r);
 void			close_builtin_redirections(t_cmd *cmd, size_t count);
 
 /* BUILTIN */

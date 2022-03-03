@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 21:43:04 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 15:40:59 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:14:13 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
-#include "errno.h"
-#include "error.h"
+#include <errno.h>
+#include "errors.h"
 #include "cmd.h"
 #include "libft.h"
 #include "shell.h"

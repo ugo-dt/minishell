@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:15:21 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "libft.h"
-#include "error.h"
+#include "errors.h"
 #include "cmd.h"
 
 static int	digits_only(char *s)
@@ -22,11 +22,11 @@ static int	digits_only(char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (!ft_isdigit(s[i]))
+		if (!ft_isdigit(s[i]) && s[i] != '-' && s[i] != '+')
 			return (0);
 		i++;
 	}
-	return (1);
+	return (i != 0);
 }
 
 static int	get_exit_code(t_cmd *cmd)

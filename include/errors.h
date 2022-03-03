@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   errors.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#ifndef ERRORS_H
+# define ERRORS_H
 
 # include <errno.h>
 
@@ -31,5 +31,5 @@ int		set_error_message(char *msg, char *info, int ret);
 int		set_errno(char *name, char *info, int errnum, int ret);
 void	*set_errno_ptr(char *name, char *info, int errnum, void *ret);
 
-/* ERROR_H */
+/* ERRORS_H */
 #endif

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_redirections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:18:29 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:48:41 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:26:38 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
-#include "error.h"
+#include "errors.h"
 #include "heredoc.h"
-#include "errno.h"
+#include <errno.h>
 #include "shell.h"
 #include "redirections.h"
 #include "builtin.h"
 #include <fcntl.h>
 
-static int	redirect_out(char *file, int append)
+static long	redirect_out(char *file, int append)
 {
 	if (append)
 		g_sh.std_out = open(file, O_WRONLY | O_APPEND | O_CREAT, 0644);
@@ -33,7 +33,7 @@ static int	redirect_out(char *file, int append)
 	return (1);
 }
 
-static int	redirect_in(char *file)
+static long	redirect_in(char *file)
 {
 	g_sh.std_in = open(file, O_RDONLY, 0644);
 	if (g_sh.std_in < 0)
@@ -69,10 +69,10 @@ void	close_builtin_redirections(t_cmd *cmd, size_t count)
 	g_sh.std_err = STDERR_FILENO;
 }
 
-size_t	do_builtin_redirections(t_cmd *cmd, t_redir *r)
+long	do_builtin_redirections(t_cmd *cmd, t_redir *r)
 {
 	int		done;
-	size_t	count;
+	long	count;
 
 	if (!do_heredocs_builtin(cmd))
 		return (-1);

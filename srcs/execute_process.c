@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 21:04:47 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 11:31:12 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
 #include "builtin.h"
-#include "error.h"
+#include "errors.h"
 #include "shell.h"
 #include "libft.h"
 #include <sys/stat.h>
@@ -72,15 +72,18 @@ void	execute_process(t_cmd *cmd)
 {
 	int		done;
 	char	**path;
+	char	**envp;
 
 	done = find_builtin(cmd);
 	if (done != EXIT_NOT_FOUND)
 		exit(run_builtin(cmd, done));
 	path = ft_split(ft_getenv("PATH"), ':');
+	envp = envp_to_array();
 	find_file_in_path(cmd, path);
-	execve(cmd->exec_name, cmd->args, envp_to_array());
+	execve(cmd->exec_name, cmd->args, envp);
 	set_error_message(cmd->args[0], CMD_NOT_FOUND, 0);
 	ft_free_array((void **)path);
 	clear_cmd(cmd);
+	exit_shell();
 	exit(EXIT_NOT_FOUND);
 }
