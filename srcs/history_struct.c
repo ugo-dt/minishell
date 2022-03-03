@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   history_struct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 19:18:58 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/25 19:21:34 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:59:32 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 #include "shell.h"
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 void	ft_histdelone(t_hist *lst)
 {
@@ -29,6 +32,7 @@ void	clear_history(void)
 {
 	t_hist	*temp;
 
+	rl_clear_history();
 	while (g_sh.history.cmd_hist)
 	{
 		temp = g_sh.history.cmd_hist;

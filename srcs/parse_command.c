@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:24:06 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:41:42 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ static void	start_new_process(t_cmd *cmd)
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_sh.exit_value = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	else if (WIFSIGNALED(status) && !nb_pipes(cmd))
 	{
 		g_sh.exit_value = 128 + WTERMSIG(status);
 		if (WTERMSIG(status) == SIGINT)
-			ft_putendl_fd("^C", g_sh.std_err);
+			ft_putchar_fd('\n', g_sh.std_err);
 		if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit: 3 (core dumped)", g_sh.std_err);
+			ft_putendl_fd("Quit (core dumped)", g_sh.std_err);
 	}
 }
 
@@ -76,6 +76,8 @@ void	start_to_parse_command(void)
 		clear_cmd(&cmd);
 		return ;
 	}
+	if (!nb_pipes(&cmd) && cmd.nb_args)
+		ft_setenv("_", cmd.args[cmd.nb_args - 1], 1);
 	if (!try_builtin_first(&cmd))
 		start_new_process(&cmd);
 	clear_cmd(&cmd);

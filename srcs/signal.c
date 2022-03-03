@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:14:06 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	sig_execve_handler(int signum)
 
 void	sig_handler(int signum)
 {
-	g_sh.exit_value = EXIT_FAILURE;
+	g_sh.exit_value = 128 + signum;
 	if (signum == SIGINT)
 	{
 		if (g_sh.status & FLAG_INTERACTVE)

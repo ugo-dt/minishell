@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:43:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:28:13 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:40:44 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ int	try_builtin_first(t_cmd *cmd)
 
 	if (nb_pipes(cmd) < 1)
 	{
-		if (cmd->nb_args)
-			ft_setenv("_", cmd->args[cmd->nb_args - 1], 1);
 		builtin = find_builtin(cmd);
 		if (builtin == EXIT_NOT_FOUND)
 			return (0);

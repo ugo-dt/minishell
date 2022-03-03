@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 20:29:58 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:46:34 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@ int	unset(t_cmd *cmd)
 	while (i < cmd->nb_args)
 	{
 		if (ft_strchr(cmd->args[i], '=') || ft_strchr(cmd->args[i], '?'))
+		{
 			ft_dprintf(g_sh.std_err, "%s: %s: '%s': %s\n", SHELL_NAME,
 				BUILTIN_UNSET_NAME, cmd->args[i], INVALID_IDENTIFIER);
+			done = 1;
+		}
 		else
 			done -= ft_unsetenv(cmd->args[i]);
 		i++;

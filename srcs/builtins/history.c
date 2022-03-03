@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 17:43:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 13:18:19 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:45:47 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	print_history(void)
 	t_hist	*temp;
 
 	temp = g_sh.history.cmd_hist;
+	if (!temp)
+		return (EXIT_FAILURE);
 	while (temp)
 	{
 		if (temp->line)
