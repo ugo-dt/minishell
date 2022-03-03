@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 11:58:01 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 19:41:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	only_n(char *s)
 			return (0);
 		i++;
 	}
-	return (1);
+	return (i != 0);
 }
 
 static void	print_arguments(t_cmd *cmd)
