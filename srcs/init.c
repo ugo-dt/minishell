@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:05:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:28:09 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	init_env(const char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strcmp(envp[i], "SHLVL") == 0
+		if (ft_strncmp(envp[i], "SHLVL", 5) == 0
 			&& ft_len_to_char(envp[i], '=') == 5)
 			adjust_shell_level();
 		else
