@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:38:18 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 11:32:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static void	start_new_process(t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 
+	if (nb_pipes(cmd))
+		ft_setenv("_", "", 1);
 	pid = fork();
 	if (pid < 0)
 		return ;
@@ -69,9 +71,11 @@ void	start_to_parse_command(void)
 	if (!should_run_command())
 		return ;
 	if (parse_command(&cmd, g_sh.line) != 1)
+	{
+		clear_cmd(&cmd);
 		return ;
-	if (try_builtin_first(&cmd))
-		return ;
-	start_new_process(&cmd);
+	}
+	if (!try_builtin_first(&cmd))
+		start_new_process(&cmd);
 	clear_cmd(&cmd);
 }

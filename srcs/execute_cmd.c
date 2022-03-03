@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:52:21 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 11:31:44 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	execute_cmd(t_cmd *cmd)
 	{
 		if (!do_redirections(cmd, cmd->redir))
 			exit(EXIT_FAILURE);
+		ft_setenv("_", cmd->args[cmd->nb_args - 1], 1);
 		execute_process(cmd);
 	}
 	do_pipes(cmd, pipes);

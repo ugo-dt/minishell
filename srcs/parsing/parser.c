@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 12:32:03 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 13:10:28 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 11:17:49 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,7 @@ int	parse_command(t_cmd *cmd, const char *line)
 	{
 		cmd->exec_name = cmd->args[0];
 		if (cmd->nb_args > 0)
-		{
 			get_options(cmd);
-			while (cmd->next)
-				cmd = cmd->next;
-			ft_setenv("_", cmd->args[cmd->nb_args - 1], 1);
-		}
 	}
 	return (1);
 }
