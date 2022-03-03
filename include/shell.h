@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:16:17 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:04:50 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:06:34 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ typedef unsigned long long		t_ull;
 # define FLAG_HISTORY			0x00000004
 
 /* Exit codes */
+# define EXIT_MISUSE			2
 # define EXIT_NOT_FOUND			127
-# define EXIT_OUT_OF_RANGE		255
 
 typedef struct g_shell
 {

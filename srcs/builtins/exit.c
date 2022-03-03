@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:06:38 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	get_exit_code(t_cmd *cmd)
 			ft_dprintf(g_sh.std_err, "%s: %s: %s: %s\n", SHELL_NAME,
 				BUILTIN_EXIT_NAME, cmd->args[i], EXIT_NUM_ARG_REQUIRED);
 			g_sh.status &= ~FLAG_LOOP;
-			return (EXIT_OUT_OF_RANGE);
+			return (EXIT_MISUSE);
 		}
 		i++;
 	}
