@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 12:32:03 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 14:42:51 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:09:38 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int	parse_command(t_cmd *cmd, const char *line)
 	if (!tokenlist)
 		return (0);
 	if (check_token_order(&tokenlist) != 0)
+	{
+		clear_tokenlist(&tokenlist);
 		return (0);
+	}
 	parse_tokens(tokenlist, NULL, cmd);
 	get_arguments(cmd, &tokenlist);
 	clear_tokenlist(&tokenlist);
@@ -87,5 +90,6 @@ int	parse_command(t_cmd *cmd, const char *line)
 		if (cmd->nb_args > 0)
 			get_options(cmd);
 	}
+	clear_tokenlist(&tokenlist);
 	return (1);
 }

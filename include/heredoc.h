@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 19:53:52 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 16:48:56 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:23:49 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "cmd.h"
 
-int		heredoc(t_cmd *cmd, char *delim);
+int		heredoc(t_cmd *cmd, char *delim, int quoted);
 int		do_heredocs(t_cmd *cmd);
 int		do_heredocs_builtin(t_cmd *cmd);
 

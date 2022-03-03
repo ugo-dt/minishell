@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:44:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:22:36 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@
 #include "parser.h"
 #include <sys/wait.h>
 
-static char	*get_line(char *line, char *delim)
+static char	*get_line(char *line, char *delim, int quoted)
 {
 	char	*dest;
 
-	if (ft_strcmp(delim, line) == 0
-		&& ft_strlen(delim) == ft_strlen(line))
+	if ((ft_strcmp(delim, line) == 0
+		&& ft_strlen(delim) == ft_strlen(line)) || quoted)
 		return (line);
 	dest = expand_param(line, ft_strlen(line), TOKEN_WORD);
 	free(line);
 	return (dest);
 }
 
-static int	do_heredoc(t_cmd *cmd, char *delim)
+static int	do_heredoc(t_cmd *cmd, char *delim, int quoted)
 {
 	char	*line;
 
@@ -42,7 +42,7 @@ static int	do_heredoc(t_cmd *cmd, char *delim)
 		line = readline("> ");
 		if (!line)
 			break ;
-		line = get_line(line, delim);
+		line = get_line(line, delim, quoted);
 		if (!line)
 			exit(set_errno("heredoc", "error", ENOMEM, EXIT_FAILURE));
 		if (ft_strcmp(delim, line) == 0
@@ -56,7 +56,7 @@ static int	do_heredoc(t_cmd *cmd, char *delim)
 	exit(EXIT_SUCCESS);
 }
 
-static int	heredoc_builtin(t_cmd *cmd, char *delim)
+static int	heredoc_builtin(t_cmd *cmd, char *delim, int quoted)
 {
 	pid_t	pid;
 	int		status;
@@ -68,7 +68,7 @@ static int	heredoc_builtin(t_cmd *cmd, char *delim)
 	if (pid < 0)
 		return (set_errno("heredoc", "fork error", errno, 0));
 	if (pid == 0)
-		do_heredoc(cmd, delim);
+		do_heredoc(cmd, delim, quoted);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_sh.exit_value = WEXITSTATUS(status);
@@ -91,7 +91,7 @@ static int	start_heredoc(t_cmd *cmd, char *delim)
 		delim[ft_strlen(delim) - 1] = '\0';
 	}
 	cmd->heredoc = 1;
-	return (heredoc_builtin(cmd, delim + quoted));
+	return (heredoc_builtin(cmd, delim + quoted, quoted));
 }
 
 int	do_heredocs_builtin(t_cmd *cmd)

@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:55:40 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:14:13 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:21:59 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-static char	*get_line(char *line, char *delim)
+static char	*get_line(char *line, char *delim, int quoted)
 {
 	char	*dest;
 
-	if (ft_strcmp(delim, line) == 0
-		&& ft_strlen(delim) == ft_strlen(line))
+	if ((ft_strcmp(delim, line) == 0
+		&& ft_strlen(delim) == ft_strlen(line)) || quoted)
 		return (line);
 	dest = expand_param(line, ft_strlen(line), TOKEN_WORD);
 	free(line);
 	return (dest);
 }
 
-static int	do_heredoc(t_cmd *cmd, char *delim)
+static int	do_heredoc(t_cmd *cmd, char *delim, int quoted)
 {
 	char	*line;
 
@@ -41,7 +41,7 @@ static int	do_heredoc(t_cmd *cmd, char *delim)
 		line = readline("> ");
 		if (!line)
 			break ;
-		line = get_line(line, delim);
+		line = get_line(line, delim, quoted);
 		if (!line)
 		{
 			ft_dprintf(g_sh.std_err, "%s: unexpected error\n", SHELL_NAME);
@@ -58,7 +58,7 @@ static int	do_heredoc(t_cmd *cmd, char *delim)
 	exit(EXIT_SUCCESS);
 }
 
-int	heredoc(t_cmd *cmd, char *delim)
+int	heredoc(t_cmd *cmd, char *delim, int quoted)
 {
 	pid_t	pid;
 	int		status;
@@ -70,7 +70,7 @@ int	heredoc(t_cmd *cmd, char *delim)
 	if (pid < 0)
 		return (set_errno("heredoc", "fork error", errno, 0));
 	if (pid == 0)
-		do_heredoc(cmd, delim);
+		do_heredoc(cmd, delim, quoted);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_sh.exit_value = WEXITSTATUS(status);

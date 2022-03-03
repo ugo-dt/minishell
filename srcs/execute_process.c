@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 21:04:47 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:17:25 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,5 @@ void	execute_process(t_cmd *cmd)
 	set_error_message(cmd->args[0], CMD_NOT_FOUND, 0);
 	ft_free_array((void **)path);
 	clear_cmd(cmd);
-	exit_shell();
 	exit(EXIT_NOT_FOUND);
 }

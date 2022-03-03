@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:37:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 17:26:19 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:15:13 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ size_t	nb_redir(t_cmd *cmd)
 void	clear_cmd(t_cmd *cmd)
 {
 	if (cmd->next)
+	{
 		clear_cmd(cmd->next);
+		free(cmd->next);
+	}
 	if (cmd->args)
 		ft_free_array((void **)cmd->args);
 	if (cmd->redir)
