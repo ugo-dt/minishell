@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 19:59:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/02 15:10:10 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:00:17 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static inline int	is_env_separator(char c)
 int					check_token_order(t_token **list);
 char				*expand_param(const char *str,
 						size_t strsize, uint32_t type);
+char				*expand(char **dest, size_t i, int dquoted, char *temp);
 
 /* Minishell lexer: token recognition
  *

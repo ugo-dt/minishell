@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:55:40 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 17:39:09 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:05:31 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static char	*get_line(char *line, char *delim, int quoted)
 	if ((ft_strcmp(delim, line) == 0
 			&& ft_strlen(delim) == ft_strlen(line)) || quoted)
 		return (line);
-	dest = expand_param(line, ft_strlen(line), TOKEN_WORD);
-	free(line);
+	dest = expand(&line, 0, 0, NULL);
 	return (dest);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:43:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 17:06:38 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:31:37 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	unrecognized_option(char *name, char *option, char *usage)
 int	find_builtin(t_cmd *cmd)
 {
 	if (!cmd || !cmd->exec_name)
-		return (EXIT_SUCCESS);
+		return (EXIT_NOT_FOUND);
 	if (ft_strcmp(cmd->exec_name, BUILTIN_ECHO_NAME) == 0)
 		return (BUILTIN_ECHO);
 	else if (ft_strcmp(cmd->exec_name, BUILTIN_CD_NAME) == 0)

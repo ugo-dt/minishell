@@ -6,13 +6,25 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 20:29:58 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 17:46:34 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 17:54:12 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "errors.h"
 #include "cmd.h"
+
+static void	invalid_identifier(char *s)
+{
+	char	q;
+
+	if (s && s[0] == '\'')
+		q = '\"';
+	else
+		q = '\'';
+	ft_dprintf(g_sh.std_err, "%s: %s: %c%s%c: %s\n", SHELL_NAME,
+		BUILTIN_EXPORT_NAME, q, s, q, INVALID_IDENTIFIER);
+}
 
 int	unset(t_cmd *cmd)
 {
@@ -30,8 +42,7 @@ int	unset(t_cmd *cmd)
 	{
 		if (ft_strchr(cmd->args[i], '=') || ft_strchr(cmd->args[i], '?'))
 		{
-			ft_dprintf(g_sh.std_err, "%s: %s: '%s': %s\n", SHELL_NAME,
-				BUILTIN_UNSET_NAME, cmd->args[i], INVALID_IDENTIFIER);
+			invalid_identifier(cmd->args[i]);
 			done = 1;
 		}
 		else

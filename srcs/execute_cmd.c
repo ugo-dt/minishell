@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 17:35:18 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:38:32 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,17 @@ void	execute_cmd(t_cmd *cmd)
 	c = cmd;
 	while (c)
 	{
-		do_heredocs(c);
+		if (!do_heredocs(c))
+			exit(EXIT_FAILURE);
 		c = c->next;
 	}
 	if (pipes < 1)
 	{
 		if (!do_redirections(cmd, cmd->redir))
+		{
+			clear_cmd(cmd);
 			exit(EXIT_FAILURE);
+		}
 		ft_setenv("_", cmd->args[cmd->nb_args - 1], 1);
 		execute_process(cmd);
 	}

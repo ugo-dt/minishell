@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:53:43 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 17:45:00 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 17:53:50 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,18 @@ static int	set_env_from_line(const char *line)
 	return (1);
 }
 
+static void	invalid_identifier(char *s)
+{
+	char	q;
+
+	if (s && s[0] == '\'')
+		q = '\"';
+	else
+		q = '\'';
+	ft_dprintf(g_sh.std_err, "%s: %s: %c%s%c: %s\n", SHELL_NAME,
+		BUILTIN_EXPORT_NAME, q, s, q, INVALID_IDENTIFIER);
+}
+
 int	export(t_cmd *cmd)
 {
 	int		done;
@@ -115,8 +127,7 @@ int	export(t_cmd *cmd)
 		if (ft_strchr(cmd->args[i], '?')
 			|| ft_len_to_char(cmd->args[i], '=') < 1)
 		{
-			ft_dprintf(g_sh.std_err, "%s: %s: '%s': %s\n", SHELL_NAME,
-				BUILTIN_EXPORT_NAME, cmd->args[i], INVALID_IDENTIFIER);
+			invalid_identifier(cmd->args[i]);
 			done = 1;
 		}
 		else if (ft_strchr(cmd->args[i], '='))
