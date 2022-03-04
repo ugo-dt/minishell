@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:43:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 17:40:44 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 17:06:38 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,10 @@ int	try_builtin_first(t_cmd *cmd)
 		builtin = find_builtin(cmd);
 		if (builtin == EXIT_NOT_FOUND)
 			return (0);
-		redir = 0;
-		if (nb_redir(cmd) > 0)
+		redir = nb_redir(cmd);
+		if (redir)
 		{
-			redir = do_builtin_redirections(cmd, cmd->redir);
-			if (redir < 0)
+			if (!do_builtin_redirections(cmd, cmd->redir))
 			{
 				g_sh.exit_value = EXIT_FAILURE;
 				return (2);

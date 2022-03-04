@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 17:30:28 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 21:29:06 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 16:11:45 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ size_t	word_len(const char *word)
 		{
 			q = word[i++];
 			while (word[i] && word[i] != q)
+				i++;
+			if (word[i])
 				i++;
 		}
 		else

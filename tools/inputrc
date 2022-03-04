@@ -1,6 +1,6 @@
 set expand-tilde on
-set colored-completion-prefix on
-set colored-stats on
+set colored-completion-prefix off
+set colored-stats off
 set mark-directories on
 set completion-ignore-case on
 set completion-query-items 100

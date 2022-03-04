@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:18:29 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:26:38 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 17:17:54 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,16 @@ static long	redirect_in(char *file)
 	return (1);
 }
 
-void	close_builtin_redirections(t_cmd *cmd, size_t count)
+int	close_builtin_redirections(t_cmd *cmd, size_t redirs)
 {
 	size_t	i;
 	t_redir	*r;
 
 	if (!cmd || !cmd->redir)
-		return ;
+		return (0);
 	i = 0;
 	r = cmd->redir;
-	while (r && i < count)
+	while (r && i < redirs)
 	{
 		if (r->mode == IO_FILE_IN)
 			close(g_sh.std_in);
@@ -67,33 +67,33 @@ void	close_builtin_redirections(t_cmd *cmd, size_t count)
 	g_sh.std_in = STDIN_FILENO;
 	g_sh.std_out = STDOUT_FILENO;
 	g_sh.std_err = STDERR_FILENO;
+	return (0);
 }
 
-long	do_builtin_redirections(t_cmd *cmd, t_redir *r)
+int	do_builtin_redirections(t_cmd *cmd, t_redir *r)
 {
 	int		done;
-	long	count;
 
 	if (!do_heredocs_builtin(cmd))
 		return (-1);
 	done = 1;
-	count = -1;
-	while (r && done && count++)
+	while (r)
 	{
 		if (r->mode == IO_FILE_IN)
-			done = redirect_in(r->file);
+			done += redirect_in(r->file);
 		else if (r->mode == IO_FILE_OUT)
-			done = redirect_out(r->file, 0);
+			done += redirect_out(r->file, 0);
 		else if (r->mode == IO_FILE_APPEND)
-			done = redirect_out(r->file, 1);
+			done += redirect_out(r->file, 1);
 		else if (r->mode == IO_HEREDOC)
 		{
 			close(cmd->fd_heredoc[1]);
 			g_sh.std_in = cmd->fd_heredoc[0];
 		}
 		if (!done)
-			return (-1);
+			return (close_builtin_redirections(cmd, done));
+		done++;
 		r = r->next;
 	}
-	return (count);
+	return (1);
 }

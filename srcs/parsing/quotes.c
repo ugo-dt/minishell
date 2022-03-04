@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 10:24:38 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/01 21:28:14 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 17:20:55 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ char	*remove_quotes(char *str)
 	{
 		if (str[i] == '\"' || str[i] == '\'')
 		{
-			q = str[i];
-			i++;
+			q = str[i++];
 			while (str[i] && str[i] != q)
 				ft_strncat(dest, &str[i++], 1);
+			if (str[i] == q)
+				i++;
 		}
 		else
 			ft_strncat(dest, &str[i++], 1);

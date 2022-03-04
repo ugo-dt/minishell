@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:11:15 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:26:42 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 17:09:50 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ int				find_builtin(t_cmd *cmd);
 int				run_builtin(t_cmd *cmd, int builtin);
 int				try_builtin_first(t_cmd *cmd);
 
-long			do_builtin_redirections(t_cmd *cmd, t_redir *r);
-void			close_builtin_redirections(t_cmd *cmd, size_t count);
+int				do_builtin_redirections(t_cmd *cmd, t_redir *r);
+int				close_builtin_redirections(t_cmd *cmd, size_t redirs);
 
 /* BUILTIN */
 #endif
