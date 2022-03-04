@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_redirections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:18:29 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 17:17:54 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:52:22 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static long	redirect_out(char *file, int append)
 	if (g_sh.std_out < 0)
 	{
 		g_sh.std_out = STDOUT_FILENO;
+		g_sh.exit_value = EXIT_FAILURE;
 		return (set_errno(file, NULL, errno, 0));
 	}
 	return (1);
@@ -39,6 +40,7 @@ static long	redirect_in(char *file)
 	if (g_sh.std_in < 0)
 	{
 		g_sh.std_in = STDIN_FILENO;
+		g_sh.exit_value = EXIT_FAILURE;
 		return (set_errno(file, NULL, errno, 0));
 	}
 	return (1);
@@ -72,27 +74,27 @@ int	close_builtin_redirections(t_cmd *cmd, size_t redirs)
 
 int	do_builtin_redirections(t_cmd *cmd, t_redir *r)
 {
+	int		count;
 	int		done;
 
-	if (!do_heredocs_builtin(cmd))
-		return (-1);
 	done = 1;
+	count = 0;
 	while (r)
 	{
 		if (r->mode == IO_FILE_IN)
-			done += redirect_in(r->file);
+			done = redirect_in(r->file);
 		else if (r->mode == IO_FILE_OUT)
-			done += redirect_out(r->file, 0);
+			done = redirect_out(r->file, 0);
 		else if (r->mode == IO_FILE_APPEND)
-			done += redirect_out(r->file, 1);
+			done = redirect_out(r->file, 1);
 		else if (r->mode == IO_HEREDOC)
 		{
 			close(cmd->fd_heredoc[1]);
 			g_sh.std_in = cmd->fd_heredoc[0];
 		}
-		if (!done)
-			return (close_builtin_redirections(cmd, done));
-		done++;
+		if (!done++)
+			return (close_builtin_redirections(cmd, count));
+		count++;
 		r = r->next;
 	}
 	return (1);

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   find_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:43:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:31:37 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:52:38 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "heredoc.h"
 #include "shell.h"
 
 int	show_error(char *name, char *error, char option, char *usage)
@@ -94,14 +95,9 @@ int	try_builtin_first(t_cmd *cmd)
 		if (builtin == EXIT_NOT_FOUND)
 			return (0);
 		redir = nb_redir(cmd);
-		if (redir)
-		{
-			if (!do_builtin_redirections(cmd, cmd->redir))
-			{
-				g_sh.exit_value = EXIT_FAILURE;
-				return (2);
-			}
-		}
+		if (redir && (!do_heredocs_builtin(cmd)
+				|| !do_builtin_redirections(cmd, cmd->redir)))
+			return (2);
 		if (builtin == BUILTIN_EXIT)
 			ft_putendl("exit");
 		g_sh.exit_value = (t_uchar)run_builtin(cmd, builtin);

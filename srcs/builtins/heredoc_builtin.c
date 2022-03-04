@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:44:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:05:32 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:51:39 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ int	do_heredocs_builtin(t_cmd *cmd)
 		if (r->mode == IO_HEREDOC)
 			done = start_heredoc(cmd, r->file);
 		if (!done)
+		{
+			g_sh.exit_value = EXIT_FAILURE;
 			return (0);
+		}
 		r = r->next;
 	}
 	return (done);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:38:32 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:57:02 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,23 @@ void	do_pipes(t_cmd *cmd, size_t pipes)
 	free(p.pid);
 }
 
+static void	start_with_heredocs(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		if (!do_heredocs(cmd))
+			exit(EXIT_FAILURE);
+		cmd = cmd->next;
+	}
+}
+
 void	execute_cmd(t_cmd *cmd)
 {
-	t_cmd	*c;
 	size_t	pipes;
 
 	signal(SIGQUIT, SIG_DFL);
+	start_with_heredocs(cmd);
 	pipes = nb_pipes(cmd);
-	c = cmd;
-	while (c)
-	{
-		if (!do_heredocs(c))
-			exit(EXIT_FAILURE);
-		c = c->next;
-	}
 	if (pipes < 1)
 	{
 		if (!do_redirections(cmd, cmd->redir))
