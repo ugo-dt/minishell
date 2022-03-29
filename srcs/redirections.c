@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 16:24:06 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/29 13:53:49 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "cmd.h"
 #include "errors.h"
 #include "shell.h"
+#include "parser.h"
 #include <fcntl.h>
 #include <string.h>
 
@@ -49,16 +50,23 @@ static int	redirect_in(char *file)
 
 static int	start_heredoc(t_cmd *cmd, char *delim)
 {
+	int		i;
 	int		quoted;
 
+	i = 0;
 	quoted = 0;
-	if (delim[quoted] == '\'' || delim[quoted] == '\"')
+	while (delim[i])
 	{
-		quoted = 1;
-		delim[ft_strlen(delim) - 1] = '\0';
+		if (delim[i] == '\'' || delim[i] == '\'')
+		{
+			quoted = 1;
+			break ;
+		}
+		i++;
 	}
+	cmd->redir->file  = remove_quotes(delim);
 	cmd->heredoc = 1;
-	return (heredoc(cmd, delim + quoted, quoted));
+	return (heredoc(cmd, cmd->redir->file, quoted));
 }
 
 int	do_heredocs(t_cmd *cmd)

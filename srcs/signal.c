@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 16:36:35 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/27 11:47:36 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	sig_execve_handler(int signum)
 {
 	g_sh.exit_value = 128 + signum;
-	if (signum == SIGINT)
+	if (signum == SIGINT || signum == SIGQUIT)
 	{
 		ft_putchar_fd('\n', g_sh.std_out);
 		exit(g_sh.exit_value);

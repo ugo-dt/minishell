@@ -11,21 +11,18 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "_ft_string.h"
 
-char	*ft_str_toupper(char *dst, const char *src)
+void	ft_str_toupper(char *s)
 {
 	int		i;
 
+	if (!s)
+		return ;
 	i = 0;
-	while (src[i])
+	while (s[i])
 	{
-		if (ft_islower(src[i]))
-			dst[i] = (char)ft_toupper(src[i]);
-		else
-			dst[i] = src[i];
+		if (ft_islower(s[i]))
+			s[i] = (char)ft_toupper(s[i]);
 		i++;
 	}
-	dst[i] = '\0';
-	return (dst);
 }

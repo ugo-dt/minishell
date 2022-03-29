@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 11:44:26 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/17 22:59:24 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,14 @@ int	cd_path(char *path, char *pwd, char *original)
 	char	*cwd;
 
 	done = chdir(path);
+	if (g_sh.current_working_dir)
+		free(g_sh.current_working_dir);
+	g_sh.current_working_dir = getcwd(NULL, 0);
 	free(path);
-	if (done != EXIT_SUCCESS)
+	if (done != EXIT_SUCCESS && original)
 	{
-		if (original)
-			ft_dprintf(g_sh.std_err, "%s: %s: %s: %s\n",
-				SHELL_NAME, BUILTIN_CD_NAME, original, strerror(errno));
+		ft_dprintf(g_sh.std_err, "%s: %s: %s: %s\n",
+			SHELL_NAME, BUILTIN_CD_NAME, original, strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	if (!pwd)

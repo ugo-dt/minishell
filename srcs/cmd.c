@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:37:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 16:15:13 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:54:14 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
 #include "libft.h"
+#include "xmalloc.h"
 
 size_t	nb_pipes(t_cmd *cmd)
 {
@@ -54,11 +55,15 @@ void	clear_cmd(t_cmd *cmd)
 	{
 		clear_cmd(cmd->next);
 		free(cmd->next);
+		cmd->next = NULL;
 	}
 	if (cmd->args)
 		ft_free_array((void **)cmd->args);
 	if (cmd->redir)
+	{
 		free_redir(cmd->redir);
+		cmd->redir = NULL;
+	}
 }
 
 t_cmd	*new_cmd(void)

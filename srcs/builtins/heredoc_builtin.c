@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:44:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 20:51:39 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:26:30 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,23 @@ static int	heredoc_builtin(t_cmd *cmd, char *delim, int quoted)
 
 static int	start_heredoc(t_cmd *cmd, char *delim)
 {
+	int		i;
 	int		quoted;
 
+	i = 0;
 	quoted = 0;
-	if (delim[quoted] == '\'' || delim[quoted] == '\"')
+	while (delim[i])
 	{
-		quoted = 1;
-		delim[ft_strlen(delim) - 1] = '\0';
+		if (delim[i] == '\'' || delim[i] == '\'')
+		{
+			quoted = 1;
+			break ;
+		}
+		i++;
 	}
+	delim = remove_quotes(ft_strdup(delim));
 	cmd->heredoc = 1;
-	return (heredoc_builtin(cmd, delim + quoted, quoted));
+	return (heredoc_builtin(cmd, delim, quoted));
 }
 
 int	do_heredocs_builtin(t_cmd *cmd)

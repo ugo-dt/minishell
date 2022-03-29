@@ -6,12 +6,11 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 16:17:54 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/06 13:01:05 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/26 12:51:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "_ft_char.h"
 
 int	ft_isalpha(int c)
 {

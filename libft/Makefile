@@ -6,12 +6,13 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/16 12:23:21 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/03/01 22:22:42 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/03/29 12:13:42 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libft.a
 
+#@echo "$(foreach src,$(SRCS),$(src)\n)"
 SRCS		=	srcs/array/2d_array.c \
 				srcs/array/ft_split.c \
 				srcs/array/str_array.c \
@@ -54,11 +55,8 @@ SRCS		=	srcs/array/2d_array.c \
 				srcs/mem/ft_memcpy.c \
 				srcs/mem/ft_memmove.c \
 				srcs/mem/ft_memset.c \
-				srcs/mem/ft_xmalloc.c \
 				srcs/string/ft_atoi.c \
 				srcs/string/ft_itoa.c \
-				srcs/string/ft_lower.c \
-				srcs/string/ft_upper.c \
 				srcs/string/ft_len_to_char.c \
 				srcs/string/ft_len_to_space.c \
 				srcs/string/ft_str_tolower.c \
@@ -92,27 +90,30 @@ SRCS		=	srcs/array/2d_array.c \
 				srcs/write/ft_putnbr_fd.c \
 				srcs/write/ft_putstr.c \
 				srcs/write/ft_putstr_fd.c
-OBJS		=	$(SRCS:.c=.o)
+
 HEADERS		=	-I include
 
-CC			=	clang
+CC			=	@clang
 FLAGS		=	-Wall -Wextra -Werror
+OBJS		=	$(SRCS:.c=.o)
 
 # Colors
-_default	=	\033[39m
+_white		=	\033[39m
 _green		= 	\033[92m
 _magenta	= 	\033[95m
 _yellow		= 	\033[33m
 _blue		= 	\033[34m
+_gray		= 	\033[37m
 _red		= 	\033[91m
 _cyan		= 	\033[96m
 
 all: $(NAME)
 
 $(NAME): text1 $(OBJS)
-	@ar rcs $(NAME) $(OBJS) && printf "\033[2K\r$(_green)$(NAME) ready!$(_default)\n"
+	@ar rcs $(NAME) $(OBJS) && printf "\033[2K\r$(_green)$(NAME) ready!$(_white)\n"
 
 .c.o:
+	@printf "\033[2K\r$(_yellow)$< $(_red)"
 	$(CC) $(FLAGS) $(HEADERS) -o $@ -c $<
 
 clean:
@@ -120,11 +121,11 @@ clean:
 
 fclean: clean
 	@test -f $(NAME) && rm -f $(NAME) || true
-	@echo "$(_default)$(_red)Cleaned $(NAME)"
+	@printf "$(_red)Cleaned $(NAME)$(_white)\n"
 
 re: fclean all
 
 text1:
-	@echo "Compiling $(NAME)... \t$(_default)"
+	@printf "$(_gray)Compiling $(NAME)... \t$(_white)\n"
 
 .PHONY: all clean fclean re text1

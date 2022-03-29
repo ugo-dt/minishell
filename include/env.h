@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:55:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/28 20:56:54 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:15:17 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ENV_H
 
 # include "libft.h"
+# include "xmalloc.h"
 
 typedef struct s_env_list
 {

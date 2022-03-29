@@ -6,12 +6,11 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:26:05 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/18 15:36:39 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/26 13:06:39 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "_ft_array.h"
 
 size_t	ft_array_size(void **arr)
 {
@@ -42,12 +41,12 @@ void	ft_free_array(void **arr)
 	arr = NULL;
 }
 
-void	ft_free_array_n(void **tab, size_t max)
+void	ft_free_array_n(void **tab, size_t n)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < max)
+	while (i < n)
 		free(tab[i++]);
 	free(tab);
 }

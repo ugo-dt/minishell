@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_upper.c                                         :+:      :+:    :+:   */
+/*   ft_fabsl.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 10:05:16 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/26 10:05:27 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/03/23 20:49:34 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/03/26 12:51:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "_ft_string.h"
 
-char	*ft_upper(char *s)
+int	ft_fabsl(long double x)
 {
-	unsigned int	i;
-
-	if (!s)
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		if (ft_islower(s[i]))
-			*s = ft_toupper(s[i]);
-		i++;
-	}
-	return (s);
+	if (x < 0)
+		return (-x);
+	return (x);
 }

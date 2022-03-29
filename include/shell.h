@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:16:17 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 18:06:34 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:15:01 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 # include "env.h"
 # include "history.h"
-# include "termios.h"
-# include "stdint.h"
+# include "xmalloc.h"
+# include <termios.h>
+# include <stdint.h>
 
 typedef unsigned char			t_uchar;
 typedef unsigned int			t_uint;
@@ -41,6 +42,7 @@ typedef struct g_shell
 	t_envl			*envp;
 	char			*line;
 	char			*prompt;
+	char			*current_working_dir;
 	t_uchar			exit_value;
 	t_history		history;
 	int				std_out;
@@ -51,7 +53,7 @@ typedef struct g_shell
 
 extern t_shell					g_sh;
 
-int	exit_shell(void);
+int		exit_shell(void);
 
 /* SHELL_H */
 #endif

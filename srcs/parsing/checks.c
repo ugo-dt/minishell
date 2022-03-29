@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:17:50 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/18 20:54:44 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	unexpected_token(unsigned int t)
 	else if (t == TOKEN_PIPE)
 		ft_printf(": '|'");
 	ft_printf("\n");
+	g_sh.exit_value = 2;
 	return (1);
 }
 /*

@@ -6,7 +6,7 @@
 #    By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/25 13:39:06 by ugdaniel          #+#    #+#              #
-#    Updated: 2022/03/03 19:41:37 by ugdaniel         ###   ########.fr        #
+#    Updated: 2022/03/29 12:13:39 by ugdaniel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS			:=	srcs/main.c \
 					srcs/prompt.c \
 					srcs/redirections.c \
 					srcs/signal.c \
+					srcs/xmalloc.c \
 					srcs/builtins/cd.c \
 					srcs/builtins/echo.c \
 					srcs/builtins/env.c \
@@ -62,7 +63,7 @@ HEADERS			:= 	-I include \
 					$(LIBFT_HEADERS)
 
 CC				:=	clang
-CFLAGS			:=	-Wall -Werror -Wextra $(MACROS)
+CFLAGS			:= -Wall -Werror -Wextra $(MACROS) -fsanitize=address
 
 ARG				:=	-DARG_MAX=$(shell getconf ARG_MAX)
 ifeq ($(OS), Linux)
@@ -93,8 +94,8 @@ clean_libft:
 	@make -s -C $(PATH_LIBFT) clean
 
 clean: clean_libft
-	@echo "$(MAGENTA)Removed object files $(DEFAULT)"
 	@rm -rf $(OBJS)
+	@echo "$(MAGENTA)Removed object files $(DEFAULT)"
 
 fclean: clean
 	@make -s -C $(PATH_LIBFT) fclean

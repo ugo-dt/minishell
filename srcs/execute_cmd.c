@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 20:57:02 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:52:14 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 #include "heredoc.h"
 #include "libft.h"
 #include "errors.h"
-#include <errno.h>
 #include "shell.h"
-#include "heredoc.h"
 #include "pipe.h"
+#include <errno.h>
 #include <signal.h>
 #include <sys/wait.h>
 
@@ -28,7 +27,7 @@ static void	redirect_process(t_cmd *cmd, t_pipe *p, size_t i)
 	{
 		close(p->pipe[i][0]);
 		if (dup2(p->pipe[i][1], STDOUT_FILENO) < 0)
-			exit(set_errno("could not redirect output",
+			exit(set_errno("pipe error (output)",
 					"dup2 error", errno, EXIT_FAILURE));
 		close(p->pipe[i][1]);
 	}
@@ -36,21 +35,21 @@ static void	redirect_process(t_cmd *cmd, t_pipe *p, size_t i)
 	{
 		close(p->pipe[i - 1][1]);
 		if (dup2(p->pipe[i - 1][0], STDIN_FILENO) < 0)
-			exit(set_errno("could not redirect input",
+			exit(set_errno("pipe error (input)",
 					"dup2 error", errno, EXIT_FAILURE));
 		close(p->pipe[i - 1][0]);
 	}
-	close_pipes(p);
 }
 
 static int	new_process(t_cmd *cmd, t_pipe *p, size_t i)
 {
 	pid_t	pid;
 
+	if (cmd->next && (pipe(p->pipe[i]) < 0))
+		exit(set_errno("pipeline", "pipe error", errno, EXIT_FAILURE));
 	pid = fork();
 	if (pid < 0)
-		return (set_errno("could not create new process: ",
-				"fork error", errno, -1));
+		return (set_errno(NULL, "fork error", errno, -1));
 	if (pid == 0)
 	{
 		redirect_process(cmd, p, i);
@@ -58,8 +57,16 @@ static int	new_process(t_cmd *cmd, t_pipe *p, size_t i)
 			return (-1);
 		execute_process(cmd);
 	}
-	close(cmd->fd_heredoc[0]);
-	close(cmd->fd_heredoc[1]);
+	if (cmd->heredoc)
+	{
+		close(cmd->fd_heredoc[0]);
+		close(cmd->fd_heredoc[1]);
+	}
+	if (i > 0)
+	{
+		close(p->pipe[i - 1][0]);
+		close(p->pipe[i - 1][1]);
+	}
 	return (pid);
 }
 
@@ -78,7 +85,6 @@ void	do_pipes(t_cmd *cmd, size_t pipes)
 		i++;
 		cmd = cmd->next;
 	}
-	close_pipes(&p);
 	i = 0;
 	while (i < p.nb_cmd)
 		waitpid(p.pid[i++], &p.exit_status, 0);

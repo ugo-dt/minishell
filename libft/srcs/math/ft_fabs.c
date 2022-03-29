@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptr.c                                              :+:      :+:    :+:   */
+/*   ft_fabs.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 15:39:36 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/26 13:35:42 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/03/23 20:37:26 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/03/26 12:51:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-ssize_t	ft_putchar_size(char c, int fd);
-
-ssize_t	ft_putaddr_size(size_t nb, int fd)
+int	ft_fabs(double x)
 {
-	ssize_t	done;
-
-	done = 0;
-	if (nb < 10)
-		done += ft_putchar_size(nb + 48, fd);
-	else if (nb < 16)
-		done += ft_putchar_size(nb + 87, fd);
-	else
-	{
-		done += ft_putaddr_size(nb / 16, fd);
-		done += ft_putaddr_size(nb % 16, fd);
-	}
-	return (done);
+	if (x < 0)
+		return (-x);
+	return (x);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:55:40 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:05:31 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/27 11:47:40 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	do_heredoc(t_cmd *cmd, char *delim, int quoted)
 	char	*line;
 
 	signal(SIGINT, sig_execve_handler);
+	signal(SIGQUIT, sig_execve_handler);
 	close(cmd->fd_heredoc[0]);
 	while (1)
 	{

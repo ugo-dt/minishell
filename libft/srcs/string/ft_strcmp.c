@@ -6,12 +6,11 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 09:59:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/06 13:01:05 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/26 12:51:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "_ft_string.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

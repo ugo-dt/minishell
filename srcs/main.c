@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:41:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:29:18 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/17 22:37:25 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int	init_shell(const char **envp)
 	g_sh.exit_value = 0;
 	g_sh.prompt = NULL;
 	g_sh.line = NULL;
+	g_sh.current_working_dir = NULL;
 	g_sh.status = FLAG_INTERACTVE | FLAG_LOOP;
 	return (1);
 }
@@ -39,6 +40,8 @@ int	exit_shell(void)
 {
 	if (g_sh.prompt)
 		free(g_sh.prompt);
+	if (g_sh.current_working_dir)
+		free(g_sh.current_working_dir);
 	if (g_sh.line)
 		free(g_sh.line);
 	clear_env_list(&g_sh.envp);

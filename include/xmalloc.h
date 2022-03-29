@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _ft_abs.h                                          :+:      :+:    :+:   */
+/*   xmalloc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 16:24:32 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/18 16:25:03 by ugdaniel         ###   ########.fr       */
+/*   Created: 2022/03/29 12:12:18 by ugdaniel          #+#    #+#             */
+/*   Updated: 2022/03/29 12:12:44 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _FT_MATH_H
-# define _FT_MATH_H	1
+#ifndef XMALLOC_H
+# define XMALLOC_H
 
-# if !defined _LIBFT_HEADER
-#  error "Do not include "_ft_char.h" directly. Use "libft.h" instead."
-# endif
+# include "libft.h"
 
-int	ft_abs(int nb);
+void	*ft_xmalloc(size_t size);
 
-/* _FT_MATH_H */
-#endif
+#endif /* !defined XMALLOC_H */

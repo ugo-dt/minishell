@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   history_struct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 19:18:58 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 16:59:32 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:14:35 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 #include "shell.h"
+#include "xmalloc.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>

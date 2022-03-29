@@ -29,7 +29,12 @@ int	pwd(t_cmd *cmd)
 		return (show_error(BUILTIN_PWD_NAME, TOO_MANY_ARGS, 0, NULL));
 	wd = getcwd(NULL, 0);
 	if (!wd)
-		return (set_errno(BUILTIN_PWD_NAME, NULL, errno, EXIT_FAILURE));
+	{
+		if (!g_sh.current_working_dir)
+			return (set_errno(BUILTIN_PWD_NAME, NULL, errno, EXIT_FAILURE));
+		ft_putendl_fd(g_sh.current_working_dir, g_sh.std_out);
+		return (EXIT_SUCCESS);
+	}
 	ft_putendl_fd(wd, g_sh.std_out);
 	free(wd);
 	return (EXIT_SUCCESS);

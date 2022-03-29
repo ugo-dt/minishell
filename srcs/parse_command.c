@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:29:35 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/18 20:55:32 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ static int	should_run_command(void)
 		return (0);
 	}
 	if (check_quotes(g_sh.line) != 0)
+	{
+		g_sh.exit_value = 2;
 		return (0);
+	}
 	s = g_sh.line;
 	while (*s)
 	{
@@ -58,9 +61,9 @@ static void	start_new_process(t_cmd *cmd)
 	{
 		g_sh.exit_value = 128 + WTERMSIG(status);
 		if (WTERMSIG(status) == SIGINT)
-			ft_putchar_fd('\n', g_sh.std_err);
+			ft_putstr_fd("^C\n", g_sh.std_err);
 		if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit (core dumped)", g_sh.std_err);
+			ft_putendl_fd("Quit: 3 (core dumped)", g_sh.std_err);
 	}
 }
 

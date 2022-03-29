@@ -6,12 +6,11 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 15:36:41 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/06 13:01:05 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/26 12:51:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "_ft_string.h"
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {

@@ -6,16 +6,15 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 16:24:07 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/02/18 16:27:38 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/26 12:51:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "_ft_math.h"
 
-int	ft_abs(int nb)
+int	ft_abs(int i)
 {
-	if (nb < 0)
-		return (-nb);
-	return (nb);
+	if (i < 0)
+		return (-i);
+	return (i);
 }

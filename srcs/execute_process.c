@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 21:04:47 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 17:58:32 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:14:41 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "errors.h"
 #include "shell.h"
 #include "libft.h"
+#include "xmalloc.h"
 #include <sys/stat.h>
 
 static void	find_file_in_path(t_cmd *cmd, char **path)
@@ -61,7 +62,8 @@ static char	**envp_to_array(void)
 	i = 0;
 	while (envl)
 	{
-		envp[i++] = ft_strjoin_3(envl->name, "=", envl->value);
+		if (envl->export)
+			envp[i++] = ft_strjoin_3(envl->name, "=", envl->value);
 		envl = envl->next;
 	}
 	envp[i] = NULL;
@@ -72,18 +74,15 @@ void	execute_process(t_cmd *cmd)
 {
 	int		done;
 	char	**path;
-	char	**envp;
 
 	done = find_builtin(cmd);
 	if (done != EXIT_NOT_FOUND)
 		exit(run_builtin(cmd, done));
 	path = ft_split(ft_getenv("PATH"), ':');
-	envp = envp_to_array();
 	find_file_in_path(cmd, path);
-	execve(cmd->exec_name, cmd->args, envp);
+	execve(cmd->exec_name, cmd->args, envp_to_array());
 	set_error_message(cmd->args[0], CMD_NOT_FOUND, 0);
 	ft_free_array((void **)path);
-	ft_free_array((void **)envp);
 	clear_cmd(cmd);
 	exit_shell();
 	exit(EXIT_NOT_FOUND);
