@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 19:59:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:00:17 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/30 18:13:04 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define TOKEN_LESSLESS		5
 # define TOKEN_PIPE			6
 # define TOKEN_WORD			7
+# define TOKEN_COLON		8
 
 # define TOKEN				unsigned int
 
@@ -128,6 +129,7 @@ void				get_options(t_cmd *cmd);
 int					check_quotes(const char *line);
 
 size_t				word_len(const char *word);
+void				lexer_word(const char *line, size_t *i, t_token **list);
 
 /* PARSER_H */
 #endif 

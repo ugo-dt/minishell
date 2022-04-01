@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 17:30:28 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 16:11:45 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/30 18:12:51 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdlib.h>
+
+void	lexer_word(const char *line, size_t *i, t_token **tokenlist)
+{
+	size_t	size;
+
+	size = word_len(&line[*i]);
+	tokenlist_add_back(tokenlist, new_token(TOKEN_WORD, &line[*i], size));
+	*i += size;
+}
 
 size_t	word_len(const char *word)
 {

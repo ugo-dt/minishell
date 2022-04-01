@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 10:36:50 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/29 12:17:05 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/30 20:35:16 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ static int	lexer_chevrons(const char *s, size_t *i, t_token *lst, TOKEN *last)
 	{
 		if (*last == TOKEN_GREAT)
 		{
-			change_last_token_type(&lst, TOKEN_GREATGREAT);
 			(*i)++;
+			*last = TOKEN_GREATGREAT;
+			change_last_token_type(&lst, TOKEN_GREATGREAT);
 			return (1);
 		}
 		*last = TOKEN_GREAT;
@@ -28,8 +29,9 @@ static int	lexer_chevrons(const char *s, size_t *i, t_token *lst, TOKEN *last)
 	{
 		if (*last == TOKEN_LESS)
 		{
-			change_last_token_type(&lst, TOKEN_LESSLESS);
 			(*i)++;
+			*last = TOKEN_LESSLESS;
+			change_last_token_type(&lst, TOKEN_LESSLESS);
 			return (1);
 		}
 		*last = TOKEN_LESS;
@@ -37,36 +39,26 @@ static int	lexer_chevrons(const char *s, size_t *i, t_token *lst, TOKEN *last)
 	return (0);
 }
 
-static void	lexer_word(const char *line, size_t *i, t_token **tokenlist)
-{
-	size_t	size;
-
-	size = word_len(&line[*i]);
-	tokenlist_add_back(tokenlist, new_token(TOKEN_WORD, &line[*i], size));
-	*i += size;
-}
-
-/*
-static int	more_lexer_2(
+// add tokens here
+static int	more_more_lexer(
 	const char *line, size_t *i, t_token **tokenlist, TOKEN *last_token)
 {
-
+	if (0)
+		return (0);
 	else
 	{
 		*last_token = TOKEN_WORD;
 		lexer_word(line, &(*i), &(*tokenlist));
 		return (1);
 	}
-}*/
+	return (0);
+}
 
 static int	more_lexer(
 	const char *line, size_t *i, t_token **tokenlist, TOKEN *last_token)
 {
 	if (line[*i] == '>' || line[*i] == '<')
-	{
-		if (lexer_chevrons(line, &(*i), *tokenlist, &(*last_token)) == 1)
-			return (1);
-	}
+		return (lexer_chevrons(line, &(*i), *tokenlist, &(*last_token)) == 1);
 	else if (ft_isspace(line[*i]))
 	{
 		*last_token = NO_TOKEN;
@@ -75,13 +67,10 @@ static int	more_lexer(
 	}
 	else if (line[*i] == '|')
 		*last_token = TOKEN_PIPE;
+	else if (line[*i] == ';')
+		*last_token = TOKEN_COLON;
 	else
-	{
-		//return (more_lexer_2(line, i, tokenlist, last_token));
-		*last_token = TOKEN_WORD;
-		lexer_word(line, &(*i), &(*tokenlist));
-		return (1);
-	}
+		return (more_more_lexer(line, i, tokenlist, last_token));
 	return (0);
 }
 
@@ -92,7 +81,7 @@ t_token	*lexer(const char *line, size_t i)
 	TOKEN	last_token;
 
 	tokenlist = NULL;
-	last_token = -1;
+	last_token = NO_TOKEN;
 	while (line[i])
 	{
 		if (line[i] == '\0' || line[i] == '#')
@@ -101,7 +90,7 @@ t_token	*lexer(const char *line, size_t i)
 			break ;
 		}
 		else if (line[i] == '\n')
-			tokenlist_add_back(&tokenlist, new_token(TOKEN_NEWLINE, NULL, 0));
+			last_token = TOKEN_NEWLINE;
 		else
 		{
 			done = more_lexer(line, &i, &tokenlist, &last_token);

@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:05:33 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/29 15:27:45 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/30 20:35:06 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 #include <errno.h>
 #include <string.h>
 
-/* TODO
-PWD = getpwd
-SHLVL = 1
-_= minishell */
 static void	no_envp(void)
 {
 	char	*pwd;

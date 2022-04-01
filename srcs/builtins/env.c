@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 16:28:39 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 15:12:08 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:46:14 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	env(t_cmd *cmd)
 	e = g_sh.envp;
 	while (e)
 	{
-		ft_dprintf(g_sh.std_out, "%s=%s\n", e->name, e->value);
+		if (e->export)
+			ft_dprintf(g_sh.std_out, "%s=%s\n", e->name, e->value);
 		e = e->next;
 	}
 	return (EXIT_SUCCESS);

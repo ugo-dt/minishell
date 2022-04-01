@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:37 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/29 13:53:49 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:49:07 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	start_heredoc(t_cmd *cmd, char *delim)
 		}
 		i++;
 	}
-	cmd->redir->file  = remove_quotes(delim);
+	cmd->redir->file = remove_quotes(delim);
 	cmd->heredoc = 1;
 	return (heredoc(cmd, cmd->redir->file, quoted));
 }
