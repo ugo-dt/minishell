@@ -6,13 +6,14 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/18 20:55:32 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/04/01 19:53:38 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
 #include "shell.h"
 #include "builtin.h"
+#include "sig.h"
 #include "parser.h"
 #include <signal.h>
 #include <sys/wait.h>
@@ -58,13 +59,7 @@ static void	start_new_process(t_cmd *cmd)
 	if (WIFEXITED(status))
 		g_sh.exit_value = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status) && !nb_pipes(cmd))
-	{
-		g_sh.exit_value = 128 + WTERMSIG(status);
-		if (WTERMSIG(status) == SIGINT)
-			ft_putstr_fd("^C\n", g_sh.std_err);
-		if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit: 3 (core dumped)", g_sh.std_err);
-	}
+		print_signal((const char **)cmd->args, status, 0, pid);
 }
 
 void	start_to_parse_command(void)

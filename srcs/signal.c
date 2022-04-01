@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/27 11:47:36 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/04/01 19:57:07 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,55 @@
 #include "termios.h"
 #include "errors.h"
 #include <errno.h>
+#include <signal.h>
+#include <unistd.h>
+
+char	*ft_strsignal(int num)
+{
+	if (num == 0)
+		return ("done");
+	if (num == SIGQUIT)
+		return ("quit");
+	if (num == SIGABRT)
+		return ("abort");
+	if (num == SIGKILL)
+		return ("kill");
+	if (num == SIGBUS)
+		return ("bus");
+	if (num == SIGSEGV)
+		return ("segmentation fault");
+	if (num == SIGTERM)
+		return ("terminated");
+	return (NULL);
+}
+
+void	print_signal(const char **cmd, int status, int next, pid_t cpid)
+{
+	int		i;
+	char	*sig;
+
+	g_sh.exit_value = 128 + (t_uchar)WTERMSIG(status);
+	if (WTERMSIG(status) == SIGINT)
+	{
+		ft_putstr_fd("^C\n", g_sh.std_err);
+		return ;
+	}
+	sig = ft_strsignal(WTERMSIG(status));
+	if (!sig)
+		return ;
+	ft_printf("%d %s\t", cpid, sig);
+	i = 0;
+	while (cmd[i])
+	{
+		ft_putstr_fd(cmd[i++], STDERR_FILENO);
+		if (cmd[i])
+			ft_putstr_fd(" ", STDERR_FILENO);
+	}
+	if (next)
+		ft_putstr_fd(" |", STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	//free(sig);
+}
 
 void	sig_execve_handler(int signum)
 {
@@ -56,7 +105,7 @@ void	init_signals(void)
 	termios_new.c_lflag &= ~ECHOCTL;
 	rc = tcsetattr(0, 0, &termios_new);
 	if (rc)
-		exit(set_error_message("tcsetattr", strerror(errno), EXIT_FAILURE));
+	exit(set_error_message("tcsetattr", strerror(errno), EXIT_FAILURE));
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);

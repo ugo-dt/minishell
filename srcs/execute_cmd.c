@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/29 12:52:14 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/04/01 19:50:26 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "errors.h"
 #include "shell.h"
 #include "pipe.h"
+#include "sig.h"
 #include <errno.h>
 #include <signal.h>
 #include <sys/wait.h>
@@ -73,25 +74,36 @@ static int	new_process(t_cmd *cmd, t_pipe *p, size_t i)
 void	do_pipes(t_cmd *cmd, size_t pipes)
 {
 	size_t	i;
+	int		j;
 	t_pipe	p;
+	t_cmd	*c;
 
 	init_pipes(&p, pipes);
 	i = 0;
+	c = cmd;
 	while (i < p.nb_cmd)
 	{
-		p.pid[i] = new_process(cmd, &p, i);
+		p.pid[i] = new_process(c, &p, i);
 		if (p.pid[i] < 0)
 			exit(EXIT_FAILURE);
 		i++;
-		cmd = cmd->next;
+		c = c->next;
 	}
 	i = 0;
+	j = 0;
 	while (i < p.nb_cmd)
-		waitpid(p.pid[i++], &p.exit_status, 0);
-	if (WIFEXITED(p.exit_status))
-		g_sh.exit_value = (t_uchar)WEXITSTATUS(p.exit_status);
-	if (WIFSIGNALED(p.exit_status))
-		g_sh.exit_value = (t_uchar)WTERMSIG(p.exit_status);
+	{
+		waitpid(p.pid[i], &p.exit_status, 0);
+		if (WIFEXITED(p.exit_status))
+			g_sh.exit_value = (t_uchar)WEXITSTATUS(p.exit_status);
+		if (WIFSIGNALED(p.exit_status) || j)
+		{
+			print_signal((const char **)cmd->args, p.exit_status, !!cmd->next, p.pid[i]);
+			j++;
+		}
+		cmd = cmd->next;
+		i++;
+	}
 	free_pipe(p.pipe, p.nb_pipes);
 	free(p.pid);
 }
