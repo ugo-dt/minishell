@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:18:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/04/01 19:50:26 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/07/14 19:00:08 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ static int	new_process(t_cmd *cmd, t_pipe *p, size_t i)
 void	do_pipes(t_cmd *cmd, size_t pipes)
 {
 	size_t	i;
-	int		j;
+	size_t	j;
+	size_t	k;
+	int		len;
+	int		len2;
 	t_pipe	p;
 	t_cmd	*c;
 
@@ -91,14 +94,31 @@ void	do_pipes(t_cmd *cmd, size_t pipes)
 	}
 	i = 0;
 	j = 0;
+	len = 0;
+	len2 = 0;
 	while (i < p.nb_cmd)
 	{
 		waitpid(p.pid[i], &p.exit_status, 0);
 		if (WIFEXITED(p.exit_status))
-			g_sh.exit_value = (t_uchar)WEXITSTATUS(p.exit_status);
-		if (WIFSIGNALED(p.exit_status) || j)
 		{
-			print_signal((const char **)cmd->args, p.exit_status, !!cmd->next, p.pid[i]);
+			g_sh.exit_value = (t_uchar)WEXITSTATUS(p.exit_status);
+		}
+		else if (WIFSIGNALED(p.exit_status) || j)
+		{
+			len2 = len;
+			len = print_signal(WTERMSIG(p.exit_status), p.pid[i]);
+			k = 0;
+			while ((len2-- - len) > 0)
+				ft_putchar(' ');
+			while (cmd->args[k])
+			{
+				ft_putstr_fd(cmd->args[k++], STDERR_FILENO);
+				if (cmd->args[k])
+					ft_putstr_fd(" ", STDERR_FILENO);
+			}
+			if (!!cmd->next)
+				ft_putstr_fd(" |", STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
 			j++;
 		}
 		cmd = cmd->next;

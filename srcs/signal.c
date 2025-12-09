@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 15:08:24 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/04/01 19:57:07 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/07/14 18:59:13 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,21 @@ char	*ft_strsignal(int num)
 	return (NULL);
 }
 
-void	print_signal(const char **cmd, int status, int next, pid_t cpid)
+int	print_signal(int status, pid_t cpid)
 {
-	int		i;
 	char	*sig;
 
 	g_sh.exit_value = 128 + (t_uchar)WTERMSIG(status);
 	if (WTERMSIG(status) == SIGINT)
 	{
 		ft_putstr_fd("^C\n", g_sh.std_err);
-		return ;
+		return (0);
 	}
 	sig = ft_strsignal(WTERMSIG(status));
 	if (!sig)
-		return ;
-	ft_printf("%d %s\t", cpid, sig);
-	i = 0;
-	while (cmd[i])
-	{
-		ft_putstr_fd(cmd[i++], STDERR_FILENO);
-		if (cmd[i])
-			ft_putstr_fd(" ", STDERR_FILENO);
-	}
-	if (next)
-		ft_putstr_fd(" |", STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	//free(sig);
+		return (0);
+	ft_printf("\t%d %s  ", cpid, sig);
+	return (ft_strlen(sig));
 }
 
 void	sig_execve_handler(int signum)

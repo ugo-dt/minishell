@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 12:43:11 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 20:52:38 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:55:35 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	run_builtin(t_cmd *cmd, int builtin)
 	if (builtin == BUILTIN_HISTORY)
 		return (print_history());
 	if (builtin == BUILTIN_EXIT)
-		return (run_exit(cmd));
+		return (builtin_exit(cmd));
 	return (EXIT_FAILURE);
 }
 

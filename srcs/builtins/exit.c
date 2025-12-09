@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:30:48 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:55:35 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	get_exit_code(t_cmd *cmd)
 	return (g_sh.exit_value);
 }
 
-int	run_exit(t_cmd *cmd)
+int	builtin_exit(t_cmd *cmd)
 {
 	if (!cmd->args)
 	{

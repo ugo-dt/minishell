@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:14:10 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/03 19:41:05 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/04/01 21:05:43 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,10 @@ static void	print_arguments(t_cmd *cmd)
 	i = 1 + cmd->nb_options;
 	while (i < cmd->nb_args)
 	{
-		ft_putstr_fd(cmd->args[i++], g_sh.std_out);
-		if (cmd->args[i])
+		ft_putstr_fd(cmd->args[i], g_sh.std_out);
+		if (cmd->args[i + 1] && cmd->args[i][0])
 			ft_putchar_fd(' ', g_sh.std_out);
+		i++;
 	}
 }
 

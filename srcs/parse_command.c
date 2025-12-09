@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:49:19 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/04/01 19:53:38 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2023/02/14 11:15:00 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	start_new_process(t_cmd *cmd)
 	if (WIFEXITED(status))
 		g_sh.exit_value = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status) && !nb_pipes(cmd))
-		print_signal((const char **)cmd->args, status, 0, pid);
+		print_signal(status, pid);
 }
 
 void	start_to_parse_command(void)

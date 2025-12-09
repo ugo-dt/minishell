@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 21:43:04 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/29 12:15:44 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/04/02 18:34:51 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,4 @@ void	free_pipe(int **arr, size_t max)
 		i++;
 	}
 	free(arr);
-}
-
-void	close_pipes(t_pipe *p)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < p->nb_pipes)
-	{
-		close(p->pipe[i][0]);
-		close(p->pipe[i][1]);
-		i++;
-	}
 }

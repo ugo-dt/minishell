@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugdaniel <ugdaniel@42.student.fr>          +#+  +:+       +#+        */
+/*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:11:15 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/04 18:18:22 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/05/26 12:01:37 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int				pwd(t_cmd *cmd);
 /* exit builtin
  *
  * 'exit [status]' */
-int				run_exit(t_cmd *cmd);
+int				builtin_exit(t_cmd *cmd);
 
 int				show_error(char *name, char *err, char option, char *usage);
 int				unrecognized_option(char *name, char *option, char *usage);
@@ -96,5 +96,4 @@ int				try_builtin_first(t_cmd *cmd);
 int				do_builtin_redirections(t_cmd *cmd, t_redir *r);
 int				close_builtin_redirections(t_cmd *cmd, size_t redirs);
 
-/* BUILTIN */
-#endif
+#endif /* BUILTIN_H */

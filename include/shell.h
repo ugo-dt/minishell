@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:16:17 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/29 12:15:01 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:54:30 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef unsigned long long		t_ull;
 # define SHELL_NAME				"minishell"
 
 /* status flags */
-# define FLAG					unsigned int
+# define TYPE_FLAG				unsigned int
 # define FLAG_INTERACTVE		0x00000001
 # define FLAG_LOOP				0x00000002
 # define FLAG_HISTORY			0x00000004
@@ -38,7 +38,7 @@ typedef unsigned long long		t_ull;
 
 typedef struct g_shell
 {
-	FLAG			status;
+	TYPE_FLAG		status;
 	t_envl			*envp;
 	char			*line;
 	char			*prompt;

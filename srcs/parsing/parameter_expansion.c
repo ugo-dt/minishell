@@ -6,7 +6,7 @@
 /*   By: ugdaniel <ugdaniel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 16:57:23 by ugdaniel          #+#    #+#             */
-/*   Updated: 2022/03/26 13:50:01 by ugdaniel         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:03:05 by ugdaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	*expand(char **dest, size_t i, int dquoted, char *temp)
 	}
 	return ((*dest));
 }
-
+/*
 char	*expand_param(const char *str, size_t strsize, uint32_t type)
 {
 	char	*dest;
@@ -114,4 +114,106 @@ char	*expand_param(const char *str, size_t strsize, uint32_t type)
 		return (dest);
 	dest = expand(&dest, 0, 0, NULL);
 	return (remove_quotes(dest));
+}
+*/
+
+size_t	ft_getenv_len(const char *start)
+{
+	size_t	len;
+	t_envl	*e;
+
+	if (!start || !(*start))
+		return (0);
+	len = word_len(start);
+	e = g_sh.envp;
+	while (e)
+	{
+		if (e->name && (ft_strncmp(e->name, start, len)) == 0)
+			return (ft_strlen(e->value));
+		e = e->next;
+	}
+	return (0);
+}
+
+size_t	get_expanded_size(const char *s)
+{
+	size_t	i;
+	size_t	len;
+	int		dquoted;
+
+	i = 0;
+	len = 0;
+	dquoted = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'' && !dquoted)
+		{
+			i++;
+			while (s[i] != '\'' && s[i])
+			{
+				i++;
+				len++;
+			}
+		}
+		else if (s[i] == '\"')
+		{
+			i++;
+			while (s[i] != '\"' && s[i])
+			{
+				printf("c: %c\n", s[i]);
+				if (s[i] == '$')
+				{
+					len += ft_getenv_len(&s[i + 1]);
+					i += word_len(&s[i]);
+					continue ;
+				}
+				i++;
+				len++;
+			}
+		}
+		else if (s[i] == '$')
+		{
+			len += ft_getenv_len(&s[i + 1]);
+			i += word_len(&s[i]);
+		}
+		else if (s[i])
+		{
+			i++;
+			len++;
+		}
+	}
+	return (len);
+}
+
+char	*expand_string(const char *s)
+{
+	size_t	i;
+	size_t	len;
+	char	*dest;
+
+	len = get_expanded_size(s);
+	ft_printf("len: %lu\n", len);
+	dest = NULL;
+	i = 0;
+	while (s[i])
+	{
+		i++;
+	}
+	return (dest);
+}
+
+char	*expand_param(const char *str, size_t strsize, uint32_t type)
+{
+	char	*s;
+//	char	*expanded_string;
+
+	s = ft_strndup(str, strsize + 1);
+	s[strsize] = '\0';
+	if (type == TOKEN_LESSLESS)
+		return (s);
+	/*ft_printf("s: %s\n", s);
+	expanded_string = expand_string(s);
+	ft_printf("e: %s\n", expanded_string);
+	return (s); */
+	return (remove_quotes(expand(&s, 0, 0, NULL)));
 }
